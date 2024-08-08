@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
 import { RestaurantCreationAttributes } from '../models/Restaurant';
 import StarRating from './starRating';
-/*
-1.Name
-2.Location
-3.Cuisine
-4.What meal was eaten from 
-5.Rating subMenu (Service, Food Quality, Ambiance)
 
-
-
-*/
 interface RestaurantFormProps {
   onSubmit: (restaurant: RestaurantCreationAttributes) => Promise<void>;
   onClose: () => void;
@@ -21,7 +12,10 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
     name: '',
     address: '',
     cuisine: [],
-    rating: 0,
+    meal: '',
+    rating_service: 0,
+    rating_foodquality: 0,
+    rating_ambiance: 0,
     notes: ''
   });
 
@@ -29,11 +23,11 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
     e.preventDefault();
     console.log('Submitting form data:', formData);
     await onSubmit(formData);
-    setFormData({ name: '', address: '', cuisine: [], rating: 0, notes: '' });
+    setFormData({ name: '', address: '', cuisine: [], meal: '', rating_service: 0, rating_foodquality: 0, rating_ambiance: 0, notes: '' });
     onClose();
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -41,9 +35,10 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
     }));
   };
 
-  const handleRatingChange = (newRating: number) => {
-    setFormData(prev => ({ ...prev, rating: newRating }));
+  const handleRatingChange = (ratingType: 'rating_service' | 'rating_foodquality' | 'rating_ambiance') => (newRating: number) => {
+    setFormData(prev => ({ ...prev, [ratingType]: newRating }));
   };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
@@ -83,8 +78,33 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
         />
       </div>
       <div>
-        <label htmlFor="rating" className="block">Rating:</label>
-        <StarRating rating={formData.rating} onRatingChange={handleRatingChange} maxRating={5} />
+        <label htmlFor="meal" className="block">Meal:</label>
+        <select
+          id="meal"
+          name="meal"
+          value={formData.meal}
+          onChange={handleChange}
+          required
+          className="w-full border rounded p-2"
+        >
+          <option value="">Select a meal</option>
+          <option value="breakfast">Breakfast</option>
+          <option value="lunch">Lunch</option>
+          <option value="dinner">Dinner</option>
+          <option value="brunch">Brunch</option>
+        </select>
+      </div>
+      <div>
+        <label htmlFor="rating_service" className="block">Service Rating:</label>
+        <StarRating rating={formData.rating_service} onRatingChange={handleRatingChange('rating_service')} maxRating={5} />
+      </div>
+      <div>
+        <label htmlFor="rating_foodquality" className="block">Food Quality Rating:</label>
+        <StarRating rating={formData.rating_foodquality} onRatingChange={handleRatingChange('rating_foodquality')} maxRating={5} />
+      </div>
+      <div>
+        <label htmlFor="rating_ambiance" className="block">Ambiance Rating:</label>
+        <StarRating rating={formData.rating_ambiance} onRatingChange={handleRatingChange('rating_ambiance')} maxRating={5} />
       </div>
       <div>
         <label htmlFor="notes" className="block">Notes:</label>

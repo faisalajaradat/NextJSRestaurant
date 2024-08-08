@@ -1,11 +1,14 @@
-import { Model, DataTypes, Sequelize, Optional } from 'sequelize';
+import { Model, DataTypes, Sequelize, Optional, EnumDataType } from 'sequelize';
 
 export interface RestaurantAttributes {
   id: number;
   name: string;
   address: string;
   cuisine: string[];
-  rating: number;
+  meal:"Breakfast" |"Brunch" | "Lunch " | "Dinner" | null;
+  rating_service: 0;
+  rating_foodquality:0;
+  rating_ambiance: 0;
   notes?: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -18,7 +21,10 @@ class Restaurant extends Model<RestaurantAttributes, RestaurantCreationAttribute
   public name!: string;
   public address!: string;
   public cuisine!: string[];
-  public rating!: number;
+  public meal!: "Breakfast" |"Brunch" | "Lunch " | "Dinner" | null;
+  public rating_service!: 0;
+  public rating_foodquality!:0;
+  public rating_ambiance!: 0;
   public notes!: string | undefined;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -41,8 +47,29 @@ class Restaurant extends Model<RestaurantAttributes, RestaurantCreationAttribute
     cuisine: {
         type: DataTypes.JSON,
         allowNull: false,
-      },rating: {
-        type: DataTypes.FLOAT,
+      },meal:{
+        type:DataTypes.ENUM,
+        values: ["Breakfast", "Lunch", "Brunch", "Dinner"],
+        allowNull: false
+      },
+      rating_service: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          min: 0,
+          max: 10
+        }
+      },
+      rating_foodquality: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          min: 0,
+          max: 10
+        }
+      },
+      rating_ambiance: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
           min: 0,

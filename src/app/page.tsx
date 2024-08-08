@@ -9,11 +9,13 @@ import SearchBar from '@/components/SearchBar';
 
 export default function Home() {
   const [restaurants, setRestaurants] = useState<RestaurantAttributes[]>([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState<RestaurantAttributes[]>([]);
 
   const fetchRestaurants = async () => {
     const response = await fetch('/api/restaurants');
     const data = await response.json();
     setRestaurants(data);
+    setFilteredRestaurants(data);
   };
 
   useEffect(() => {
@@ -34,10 +36,20 @@ export default function Home() {
       console.error('Failed to add restaurant');
     }
   };
+  const handleSearch = (term: string) => {
+    const filtered = restaurants.filter(restaurant => 
+      restaurant.name.toLowerCase().includes(term.toLowerCase()) ||
+      restaurant.address.toLowerCase().includes(term.toLowerCase()) ||
+      restaurant.cuisine.some(c => c.toLowerCase().includes(term.toLowerCase())) ||
+      restaurant.meal?.toLowerCase().includes(term.toLowerCase())||
+      (restaurant.notes && restaurant.notes.toLowerCase().includes(term.toLowerCase()))
+    );
+    setFilteredRestaurants(filtered);
+  };
 
   return (
-    <div className="container mx-auto p-4 dark">
-      <h1 className="text-3xl font-bold mb-6">Restaurant Tracker</h1>
+    <div className="container mx-auto p-4 ">
+      <h1 className="text-3xl font-bold mb-6 text-center">Restaurant Tracker</h1>
       
       <div>
         <div className='flex justify-between'>
@@ -46,8 +58,8 @@ export default function Home() {
           <CreateRestaurant pass={addRestaurant}></CreateRestaurant>
 
         </div>
-        <SearchBar/>
-        <RestaurantList restaurants={restaurants} />
+        <SearchBar onSearch={handleSearch}/>
+        <RestaurantList restaurants={filteredRestaurants || restaurants} />
       </div>
     </div>
   );
