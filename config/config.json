@@ -1,0 +1,14 @@
+{
+  "development": {
+    "dialect": "sqlite",
+    "storage": "./restaurants.db"
+  },
+  "test": {
+    "dialect": "sqlite",
+    "storage": ":memory:"
+  },
+  "production": {
+    "dialect": "sqlite",
+    "storage": "./restaurants.db"
+  }
+}
