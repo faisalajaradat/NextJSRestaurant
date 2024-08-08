@@ -31,7 +31,7 @@ const RestaurantList: React.FC<RestaurantListProps> = ({ restaurants }) => {
                     <p>Address: {restaurant.address}</p>
                     <p><strong>Cuisine:</strong> {renderCuisine(restaurant.cuisine)}</p>
                     <p><strong>Rating:</strong> <StarRating rating={calculateAverage(restaurant.rating_service, restaurant.rating_foodquality, restaurant.rating_ambiance)} onRatingChange={() => {}} maxRating={5} /></p>
-                    {restaurant.notes && <p><strong>Notes:</strong> {restaurant.notes}</p>}
+                    {/* {restaurant.notes && <p><strong>Notes:</strong> {restaurant.notes}</p>} */}
                     </CardContent>
                 </Card>
             </Link>
