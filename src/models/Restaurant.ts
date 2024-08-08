@@ -1,11 +1,13 @@
 import { Model, DataTypes, Sequelize, Optional, EnumDataType } from 'sequelize';
 
+export type Mealtype =  "Breakfast" |"Brunch" | "Lunch " | "Dinner" | null;
+
 export interface RestaurantAttributes {
   id: number;
   name: string;
   address: string;
   cuisine: string[];
-  meal:"Breakfast" |"Brunch" | "Lunch " | "Dinner" | null;
+  meal:Mealtype;
   rating_service: 0;
   rating_foodquality:0;
   rating_ambiance: 0;
@@ -21,7 +23,7 @@ class Restaurant extends Model<RestaurantAttributes, RestaurantCreationAttribute
   public name!: string;
   public address!: string;
   public cuisine!: string[];
-  public meal!: "Breakfast" |"Brunch" | "Lunch " | "Dinner" | null;
+  public meal!: Mealtype;
   public rating_service!: 0;
   public rating_foodquality!:0;
   public rating_ambiance!: 0;
