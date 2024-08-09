@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { RestaurantAttributes } from '@/models/Restaurant';
 import { renderCuisine } from '@/utils/renderCuisine';
 import calculateAverage from '@/utils/CalculateAverageStars';
+import StarRating from './starRating';
 
 interface RestaurantDetailProps {
   id: number;
@@ -28,9 +29,10 @@ const RestaurantDetail: React.FC<RestaurantDetailProps> = ({ id }) => {
       <p><strong>Address:</strong> {restaurant.address}</p>
       <p><strong>Cuisine:</strong> {renderCuisine(restaurant.cuisine)}</p>
       <p><strong>Meal: </strong>{restaurant.meal}</p>
-      <p><strong>Service Rating:</strong> {restaurant.rating_service}/10</p>
-      <p><strong>Food Quality Rating:</strong> {restaurant.rating_foodquality}/10</p>
-      <p><strong>Ambiance Rating:</strong> {restaurant.rating_ambiance}/10</p>
+      <p><strong>Overall Rating</strong> <StarRating rating={calculateAverage(restaurant.rating_service, restaurant.rating_foodquality, restaurant.rating_ambiance)} onRatingChange={() => {}} maxRating={5} allowHover={false} /></p>
+      <strong>Service Rating:</strong> <StarRating rating= {restaurant.rating_service}onRatingChange={() => {}} maxRating={5} allowHover={false} />
+      <strong>Food Quality Rating:</strong> <StarRating rating= {restaurant.rating_foodquality}onRatingChange={() => {}} maxRating={5} allowHover={false} />
+      <strong>Ambiance Rating:</strong> <StarRating rating= {restaurant.rating_ambiance}onRatingChange={() => {}} maxRating={5} allowHover={false} />
       {restaurant.notes && (
         <div>
           <strong>Notes:</strong>

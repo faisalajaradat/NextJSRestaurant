@@ -27,11 +27,10 @@ const RestaurantList: React.FC<RestaurantListProps> = ({ restaurants }) => {
                     
                         <h2 className="text-xl font-semibold">{restaurant.name}</h2>
                     </CardHeader>
-                    <CardContent>
-                    <p>Address: {restaurant.address}</p>
-                    <p><strong>Cuisine:</strong> {renderCuisine(restaurant.cuisine)}</p>
-                    <p><strong>Rating:</strong> <StarRating rating={calculateAverage(restaurant.rating_service, restaurant.rating_foodquality, restaurant.rating_ambiance)} onRatingChange={() => {}} maxRating={5} /></p>
-                    {/* {restaurant.notes && <p><strong>Notes:</strong> {restaurant.notes}</p>} */}
+                    <CardContent style={{whiteSpace:'nowrap', overflow:'hidden'}}>
+                    <p><strong>Address:</strong> {restaurant.address}</p>
+                    <p><strong>Cuisine:</strong> {renderCuisine(restaurant.cuisine)} </p>
+                    <StarRating rating={calculateAverage(restaurant.rating_service, restaurant.rating_foodquality, restaurant.rating_ambiance)} onRatingChange={() => {}} maxRating={5} allowHover={false} />
                     </CardContent>
                 </Card>
             </Link>

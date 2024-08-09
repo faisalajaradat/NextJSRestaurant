@@ -30,7 +30,6 @@ const initModel = async () => {
   console.log('Database & tables created!');
 };
 
-// CRUD operations
 
 // Create
 export const createRestaurant = async (data: RestaurantCreationAttributes): Promise<RestaurantAttributes> => {

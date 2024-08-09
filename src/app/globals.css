@@ -65,5 +65,7 @@
   }
   body {
     @apply bg-background text-foreground;
+  }p{
+    overflow: inherit;
   }
 }

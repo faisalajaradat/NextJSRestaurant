@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { RestaurantCreationAttributes, Mealtype } from '../models/Restaurant';
 import StarRating from './starRating';
 import { toast } from 'react-hot-toast';
+import CuisineSelect from './SelectCuisine';
 
 interface RestaurantFormProps {
   onSubmit: (restaurant: RestaurantCreationAttributes) => Promise<void>;
@@ -30,8 +31,7 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Check if all ratings are set
+
     const errors = {
       rating_service: formData.rating_service === 0,
       rating_foodquality: formData.rating_foodquality === 0,
@@ -68,6 +68,9 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
                value
     }));
   };
+  const handleCuisineChange = (cuisines: string[]) => {
+    setFormData(prev => ({ ...prev, cuisine: cuisines } as RestaurantCreationAttributes));
+  };
 
   const handleRatingChange = (ratingType: 'rating_service' | 'rating_foodquality' | 'rating_ambiance') => (newRating: number) => {
     setFormData(prev => ({ ...prev, [ratingType]: newRating }));
@@ -102,14 +105,9 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
       </div>
       <div>
         <label htmlFor="cuisine" className="block">Cuisine:</label>
-        <input
-          type="text"
-          id="cuisine"
-          name="cuisine"
-          value={formData.cuisine.join(', ')}
-          onChange={handleChange}
-          required
-          className="w-full border rounded p-2"
+        <CuisineSelect
+          selectedCuisines={formData.cuisine}
+          onChange={handleCuisineChange}
         />
       </div>
       <div>

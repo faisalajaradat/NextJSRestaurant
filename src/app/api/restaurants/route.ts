@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { initModel, createRestaurant, getAllRestaurants } from '@/lib/database';
+import { initModel, createRestaurant, getAllRestaurants, deleteRestaurant } from '@/lib/database';
 import { RestaurantCreationAttributes } from '@/models/Restaurant';
 
 export async function GET() {
@@ -36,5 +36,28 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Failed to create restaurant:', error);
     return NextResponse.json({ error: 'Failed to create restaurant' }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  await initModel();
+
+  try {
+    const url = new URL(request.url);
+    const id = parseInt(url.searchParams.get('id') || '');
+
+    if (isNaN(id)) {
+      return NextResponse.json({ error: 'Invalid restaurant ID' }, { status: 400 });
+    }
+
+    const success = await deleteRestaurant(id);
+    if (!success) {
+      return NextResponse.json({ error: 'Restaurant not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: 'Restaurant deleted successfully' }, { status: 200 });
+  } catch (error) {
+    console.error('Failed to delete restaurant:', error);
+    return NextResponse.json({ error: 'Failed to delete restaurant' }, { status: 500 });
   }
 }

@@ -11,6 +11,7 @@ export default function Home() {
   const [restaurants, setRestaurants] = useState<RestaurantAttributes[]>([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState<RestaurantAttributes[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchRestaurants = async () => {
     setIsLoading(true);
@@ -53,17 +54,19 @@ export default function Home() {
       toast.error('Failed to add restaurant. Please try again.');
     }
   };
+useEffect(() => {
+  const filtered = restaurants.filter(restaurant => 
+    restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    restaurant.address.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    restaurant.cuisine.some(c => c.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    restaurant.meal?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (restaurant.notes && restaurant.notes.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+  setFilteredRestaurants(filtered);
 
-  const handleSearch = (term: string) => {
-    const filtered = restaurants.filter(restaurant => 
-      restaurant.name.toLowerCase().includes(term.toLowerCase()) ||
-      restaurant.address.toLowerCase().includes(term.toLowerCase()) ||
-      restaurant.cuisine.some(c => c.toLowerCase().includes(term.toLowerCase())) ||
-      restaurant.meal?.toLowerCase().includes(term.toLowerCase()) ||
-      (restaurant.notes && restaurant.notes.toLowerCase().includes(term.toLowerCase()))
-    );
-    setFilteredRestaurants(filtered);
-  };
+}, [searchTerm, restaurants]);
+
+   
 
   return (
     <div className="container mx-auto p-4 ">
@@ -74,7 +77,7 @@ export default function Home() {
           <h2 className="text-2xl flex-wrap basis-6/12 font-semibold mb-4">Restaurant List</h2>
           <CreateRestaurant pass={addRestaurant} />
         </div>
-        <SearchBar onSearch={handleSearch}/>
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
         {isLoading ? (
           <p>Loading restaurants...</p>
         ) : (
