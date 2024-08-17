@@ -1,6 +1,7 @@
 import { Sequelize, Options } from 'sequelize';
 import Restaurant, { RestaurantAttributes, RestaurantCreationAttributes } from '../models/Restaurant';
 import config from '../../config/config.json';
+import User, { UserAttributes, UserCreationAttributes } from '@/models/User';
 
 const env = process.env.NODE_ENV || 'development';
 const sequelizeConfig = (config as {[key: string]: Options})[env];
@@ -103,9 +104,10 @@ export { initDatabase, initModel };
 export default {
   initDatabase,
   initModel,
+  // Restaurant operations
   createRestaurant,
   getRestaurantById,
   getAllRestaurants,
   updateRestaurant,
-  deleteRestaurant
+  deleteRestaurant,
 };
