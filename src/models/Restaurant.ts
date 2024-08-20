@@ -2,11 +2,13 @@ import { Model, DataTypes, Sequelize, Optional, EnumDataType } from 'sequelize';
 
 export type Mealtype =  "Breakfast" |"Brunch" | "Lunch " | "Dinner" | null;
 import { CUISINE_OPTIONS } from '@/lib/constants';
+import { UUID } from 'crypto';
 
 
 export type Cuisine = typeof CUISINE_OPTIONS[number];
 
 export interface RestaurantAttributes {
+  uuid: UUID;
   id: number;
   name: string;
   address: string;
@@ -23,6 +25,7 @@ export interface RestaurantAttributes {
 export interface RestaurantCreationAttributes extends Optional<RestaurantAttributes, 'id'> {}
 
 class Restaurant extends Model<RestaurantAttributes, RestaurantCreationAttributes> implements RestaurantAttributes {
+  public uuid!: UUID;
   public id!: number;
   public name!: string;
   public address!: string;
@@ -37,6 +40,10 @@ class Restaurant extends Model<RestaurantAttributes, RestaurantCreationAttribute
 
   static initModel(sequelize: Sequelize): typeof Restaurant {
     Restaurant.init({
+      uuid:{
+        type:DataTypes.UUID,
+        allowNull:false
+      },
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,

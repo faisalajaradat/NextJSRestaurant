@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RestaurantCreationAttributes, Mealtype } from '../models/Restaurant';
 import StarRating from './starRating';
 import { toast } from 'react-hot-toast';
 import CuisineSelect from './SelectCuisine';
+import { useAuth } from '@/hooks/useAuth';
+import { UUID } from 'crypto';
 
 interface RestaurantFormProps {
   onSubmit: (restaurant: RestaurantCreationAttributes) => Promise<void>;
@@ -10,7 +12,8 @@ interface RestaurantFormProps {
 }
 
 const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) => {
-  const [formData, setFormData] = useState<RestaurantCreationAttributes>({
+  const { user, loading } = useAuth();
+  const [formData, setFormData] = useState<Omit<RestaurantCreationAttributes, 'uuid'>>({
     name: '',
     address: '',
     cuisine: [],
@@ -40,20 +43,39 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
 
     setFormErrors(errors);
 
-    // If any rating is 0, prevent form submission
     if (Object.values(errors).some(error => error)) {
       toast.error('Please set all ratings before submitting.');
       return;
     }
 
+    if (!user) {
+      toast.error('User not authenticated. Please log in.');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      await onSubmit(formData);
-      setFormData({ name: '', address: '', cuisine: [], meal: null, rating_service: 0, rating_foodquality: 0, rating_ambiance: 0, notes: '' });
+      const restaurantWithUUID: RestaurantCreationAttributes = {
+        ...formData,
+        uuid: user!.id as UUID
+      };
+      console.log('Submitting restaurant with UUID:', restaurantWithUUID);
+      await onSubmit(restaurantWithUUID);
+      setFormData({
+        name: '',
+        address: '',
+        cuisine: [],
+        meal: null,
+        rating_service: 0,
+        rating_foodquality: 0,
+        rating_ambiance: 0,
+        notes: ''
+      });
       setFormErrors({ rating_service: false, rating_foodquality: false, rating_ambiance: false });
       onClose();
     } catch (error) {
       console.error('Error submitting form:', error);
+      toast.error('Failed to submit form. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -69,6 +91,7 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
     }));
   };
   const handleCuisineChange = (cuisines: string[]) => {
+    console.log(cuisines)
     setFormData(prev => ({ ...prev, cuisine: cuisines } as RestaurantCreationAttributes));
   };
 

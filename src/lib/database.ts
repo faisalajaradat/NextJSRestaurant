@@ -98,6 +98,19 @@ export const deleteRestaurant = async (id: number): Promise<boolean> => {
     throw error;
   }
 };
+export async function getRestaurantsByUUID(uuid: string) {
+  try {
+    const restaurants = await Restaurant.findAll({
+      where: {
+        uuid: uuid
+      }
+    });
+    return restaurants;
+  } catch (error) {
+    console.error('Error in getRestaurantsByUUID:', error);
+    throw error;
+  }
+}
 
 export { initDatabase, initModel };
 
@@ -110,4 +123,5 @@ export default {
   getAllRestaurants,
   updateRestaurant,
   deleteRestaurant,
+  getRestaurantsByUUID,
 };

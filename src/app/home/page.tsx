@@ -7,6 +7,7 @@ import { RestaurantAttributes, RestaurantCreationAttributes } from "@/models/Res
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {useAuth} from "@/hooks/useAuth"
+import { UUID } from "crypto";
 
 export default function HomePage(){
         const { user, loading } = useAuth()
@@ -16,9 +17,11 @@ export default function HomePage(){
         const [searchTerm, setSearchTerm] = useState('');
       
         const fetchRestaurants = async () => {
+
+          if(!user) return;
           setIsLoading(true);
           try {
-            const response = await fetch('/api/restaurants');
+            const response = await fetch(`/api/restaurants?uuid=${user!.id as UUID}`);
             if (!response.ok) {
               throw new Error('Failed to fetch restaurants');
             }
@@ -35,7 +38,7 @@ export default function HomePage(){
       
         useEffect(() => {
           fetchRestaurants();
-        }, []);
+        }, [user]);
       
         const addRestaurant = async (restaurant: RestaurantCreationAttributes) => {
           try {

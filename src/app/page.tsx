@@ -9,5 +9,11 @@ import { toast } from 'react-hot-toast';
 import NavBar from '@/components/NavBar';
 
 export default function Home() {
-
+    return(
+    <div className='flex px-12 flex-wrap justify-evenly align-middle h-[100px]'> 
+            <div className=''>
+                <h1 className='text-3xl '>Track your Restaurants!</h1>
+            </div>
+   
+    </div>)
 }

@@ -1,25 +1,34 @@
 import { NextResponse } from 'next/server';
-import { initModel, createRestaurant, getAllRestaurants, deleteRestaurant } from '@/lib/database';
+import { initModel, createRestaurant, getAllRestaurants, deleteRestaurant, getRestaurantsByUUID } from '@/lib/database';
 import { RestaurantCreationAttributes } from '@/models/Restaurant';
 
-export async function GET() {
+export async function GET(request: Request) {
   await initModel();
 
   try {
-    const restaurants = await getAllRestaurants();
-    return NextResponse.json(restaurants);
+    const url = new URL(request.url);
+    const uuid = url.searchParams.get('uuid');
+
+    if (uuid) {
+      // Get restaurants for a specific UUID
+      const restaurants = await getRestaurantsByUUID(uuid);
+      return NextResponse.json(restaurants);
+    } else {
+      // Get all restaurants if no UUID is provided
+      const restaurants = await getAllRestaurants();
+      return NextResponse.json(restaurants);
+    }
   } catch (error) {
     console.error('Failed to fetch restaurants:', error);
     return NextResponse.json({ error: 'Failed to fetch restaurants' }, { status: 500 });
   }
 }
-
 export async function POST(request: Request) {
   await initModel();
 
   try {
     const body: RestaurantCreationAttributes = await request.json();
-    const { name, address, cuisine, meal, rating_ambiance, rating_foodquality, rating_service, notes } = body;
+    const { uuid, name, address, cuisine, meal, rating_ambiance, rating_foodquality, rating_service, notes } = body;
 
     if (!name || !address || !cuisine || !meal || rating_ambiance === undefined || rating_foodquality === undefined ||rating_service === undefined ) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -31,7 +40,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Ratings must be numbers between 0 and 10' }, { status: 400 });
     }
 
-    const restaurant = await createRestaurant({name, address, cuisine, meal, rating_ambiance, rating_foodquality, rating_service, notes });
+    const restaurant = await createRestaurant({ uuid, name, address, cuisine, meal, rating_ambiance, rating_foodquality, rating_service, notes });
     return NextResponse.json(restaurant, { status: 201 });
   } catch (error) {
     console.error('Failed to create restaurant:', error);

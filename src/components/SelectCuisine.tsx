@@ -1,12 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CUISINE_OPTIONS} from '@/lib/constants';
 import toast from 'react-hot-toast';
+import { useAuth } from '../hooks/useAuth';
 
 
 
 interface CuisineSelectProps {
   selectedCuisines: string[];
   onChange: (cuisines: string[]) => void;
+  
+}
+type Cuisine = typeof CUISINE_OPTIONS[number];
+
+function isValidCuisine(cuisine:string):cuisine is Cuisine{
+  return CUISINE_OPTIONS.includes(cuisine as Cuisine);
+
 }
 
 
@@ -27,13 +35,15 @@ const CuisineSelect: React.FC<CuisineSelectProps> = ({ selectedCuisines, onChang
   };
 
   const addCuisine = (cuisine: string) => {
-    if (!selectedCuisines.includes(cuisine) && (typeof CUISINE_OPTIONS).includes(cuisine)) {
-      onChange([...selectedCuisines, cuisine]);
-    }else if(!(typeof CUISINE_OPTIONS).includes(cuisine)){
-        toast.error("Please Pick One of the Options.")
+    if(isValidCuisine(cuisine)){
+      if(!selectedCuisines.includes(cuisine)){
+        onChange([...selectedCuisines, cuisine]);
+        setInputValue('');
+        inputRef.current?.focus();
+      }
+    }else{
+      toast.error(`${cuisine} is not a valid option. Please pick one of the available options.`);
     }
-    setInputValue('');
-    inputRef.current?.focus();
   };
 
   const removeCuisine = (cuisine: string) => {
@@ -92,8 +102,8 @@ const CuisineSelect: React.FC<CuisineSelectProps> = ({ selectedCuisines, onChang
         />
       </div>
       {isOpen && filteredOptions.length > 0 && (
-        <div className="absolute z-10 w-full mt-1 bg-white border rounded shadow-lg max-h-60 overflow-y-auto">
-          {filteredOptions.slice(0,5).map(cuisine => (
+        <div className="absolute z-10 w-full mt-1 bg-white border rounded shadow-lg max-h-40 overflow-y-auto ">
+          {filteredOptions.map(cuisine => (
             <div 
               key={cuisine}
               className="p-2 cursor-pointer hover:bg-gray-100"

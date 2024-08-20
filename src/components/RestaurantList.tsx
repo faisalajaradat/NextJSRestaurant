@@ -17,6 +17,8 @@ interface RestaurantListProps {
 }
 
 const RestaurantList: React.FC<RestaurantListProps> = ({ restaurants }) => {
+
+
   return (
     <div className="flex flex-wrap space-x4 dark">
       {restaurants.map((restaurant) => (
