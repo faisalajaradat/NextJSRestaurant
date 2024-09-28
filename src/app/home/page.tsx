@@ -38,7 +38,7 @@ export default function HomePage(){
       
         useEffect(() => {
           fetchRestaurants();
-        }, [user]);
+        }, [user, fetchRestaurants]);
       
         const addRestaurant = async (restaurant: RestaurantCreationAttributes) => {
           try {

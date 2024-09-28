@@ -4,8 +4,8 @@ import Link from 'next/link'
 import { useAuth } from '@/hooks/useAuth'
 import { supabase } from '@/lib/supabaseClient'
 import Image from 'next/image'
-import { NUMBER } from 'sequelize'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { usePathname } from 'next/navigation'
 
 export default function Navbar() {
   const { user, loading } = useAuth()
@@ -13,15 +13,27 @@ export default function Navbar() {
   const handleSignOut = async () => {
     await supabase.auth.signOut()
   }
+  const pathname = usePathname();
+
+  const linkStyle = (path:string) => {
+    const baseStyle = 'font-bold hover:text-blue-500 transition-colors duration-200';
+    const activeStyle = 'text-blue-500 underline underline-offset-4';
+    return pathname === path
+      ? `${baseStyle} ${activeStyle}`
+      : `${baseStyle} text-black`;
+  };
 
   return (
     <nav className="bg-slate-300 p-4 ">
-      <div className="h-[7vh] container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-black text-2xl font-bold hover:text-blue-500">
+      <div className="h-[7vh] container mx-auto flex justify-between items-center ">
+        <div className='flex-nowrap flex items-center'>
+        <Link href="/" className="text-black text-2xl mr-10 font-bold hover:text-blue-500">
           Restaurant Tracker
         </Link>
-        <div>
-            <Link href='/home' className='text-black font-bold hover:text-blue-500'> Home </Link>
+        <div className='space-x-4'>
+          <Link href='/home' className={linkStyle('/home')}> Home </Link>
+          <Link prefetch href='/restaurants' className={linkStyle('/restaurants')}> Restaurants </Link>
+        </div>
         </div>
         <div>
           {loading ? (
