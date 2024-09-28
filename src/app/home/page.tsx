@@ -4,7 +4,7 @@ import CreateRestaurant from "@/components/AddFormModal";
 import RestaurantList from "@/components/RestaurantList";
 import SearchBar from "@/components/SearchBar";
 import { RestaurantAttributes, RestaurantCreationAttributes } from "@/models/Restaurant";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {useAuth} from "@/hooks/useAuth"
 import { UUID } from "crypto";
@@ -16,9 +16,8 @@ export default function HomePage(){
         const [isLoading, setIsLoading] = useState(true);
         const [searchTerm, setSearchTerm] = useState('');
       
-        const fetchRestaurants = async () => {
-
-          if(!user) return;
+        const fetchRestaurants = useCallback(async () => {
+          if (!user) return;
           setIsLoading(true);
           try {
             const response = await fetch(`/api/restaurants?uuid=${user!.id as UUID}`);
@@ -34,10 +33,12 @@ export default function HomePage(){
           } finally {
             setIsLoading(false);
           }
-        };
+        }, [user]); // Dependency array with 'user'
       
         useEffect(() => {
-          fetchRestaurants();
+          if (user) {
+            fetchRestaurants();
+          }
         }, [user, fetchRestaurants]);
       
         const addRestaurant = async (restaurant: RestaurantCreationAttributes) => {
