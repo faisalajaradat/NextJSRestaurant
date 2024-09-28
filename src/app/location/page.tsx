@@ -1,9 +1,15 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 
+// Define the type for location
+interface Location {
+  latitude: number;
+  longitude: number;
+}
+
 const LocationComponent = () => {
-  const [location, setLocation] = useState(null);
-  const [error, setError] = useState(null);
+  const [location, setLocation] = useState<Location | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,11 +23,13 @@ const LocationComponent = () => {
           setLoading(false);
         },
         (err) => {
+          setError('Failed to retrieve location. Please try again.');
           setLoading(false);
         },
         { timeout: 10000, maximumAge: 0 }
       );
     } else {
+      setError('Geolocation is not supported by your browser.');
       setLoading(false);
     }
   }, []);
