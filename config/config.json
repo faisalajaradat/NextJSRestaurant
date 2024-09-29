@@ -1,14 +1,26 @@
 {
   "development": {
-    "dialect": "sqlite",
-    "storage": "./restaurants.db"
+    "username": "test_user",
+    "password": "test_password",
+    "database": "test_db",
+    "host": "192.168.3.219",
+    "port": 5432,
+    "dialect": "postgres"
   },
   "test": {
-    "dialect": "sqlite",
-    "storage": ":memory:"
+    "username": "test_user",
+    "password": "test_password",
+    "database": "test_db",
+    "host": "192.168.3.219",
+    "port": 5432,
+    "dialect": "postgres"
   },
   "production": {
-    "dialect": "sqlite",
-    "storage": "./restaurants.db"
+    "username": "test_user",
+    "password": "test_password",
+    "database": "test_db",
+    "host": "192.168.3.219",
+    "port": 5432,
+    "dialect": "postgres"
   }
 }

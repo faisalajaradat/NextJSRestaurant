@@ -1,54 +1,59 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabaseClient'
-import Link from 'next/link'
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function SignUp() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const router = useRouter()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    setLoading(true)
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
 
+    // Check if passwords match
     if (password !== confirmPassword) {
-      setError("Passwords don't match")
-      setLoading(false)
-      return
+      setError("Passwords don't match");
+      setLoading(false);
+      return;
     }
 
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-      })
+      // Make API request to register
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),  // Only email and password
+      });
 
-      if (error) throw error
-
-      if (data) {
-        // Signup successful
-        alert('Check your email for the confirmation link!')
-        router.push('/signin') // Redirect to signin page
+      if (!response.ok) {
+        const { message } = await response.json();
+        throw new Error(message);
       }
+
+      alert('Registration successful. Please login.');
+      router.push('/signin');
     } catch (error: any) {
-      setError(error.message)
+      setError(error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen ">
       <div className="p-8 bg-white rounded shadow-md w-96">
         <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
         <form onSubmit={handleSignUp}>
+          {/* Email Input */}
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-600">Email</label>
             <input
@@ -60,6 +65,8 @@ export default function SignUp() {
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
+
+          {/* Password Input */}
           <div className="mb-4">
             <label htmlFor="password" className="block text-sm font-medium text-gray-600">Password</label>
             <input
@@ -71,6 +78,8 @@ export default function SignUp() {
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
+
+          {/* Confirm Password Input */}
           <div className="mb-4">
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-600">Confirm Password</label>
             <input
@@ -82,7 +91,11 @@ export default function SignUp() {
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             />
           </div>
+
+          {/* Error Message */}
           {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
@@ -91,6 +104,8 @@ export default function SignUp() {
             {loading ? 'Signing Up...' : 'Sign Up'}
           </button>
         </form>
+
+        {/* Redirect to Sign In */}
         <p className="mt-4 text-center text-sm">
           Already have an account?{' '}
           <Link href="/signin" className="text-blue-500 hover:text-blue-600">
@@ -99,5 +114,5 @@ export default function SignUp() {
         </p>
       </div>
     </div>
-  )
+  );
 }

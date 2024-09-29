@@ -7,7 +7,6 @@ import { RestaurantAttributes, RestaurantCreationAttributes } from "@/models/Res
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {useAuth} from "@/hooks/useAuth"
-import { UUID } from "crypto";
 
 export default function HomePage(){
         const { user, loading } = useAuth()
@@ -20,7 +19,9 @@ export default function HomePage(){
           if (!user) return;
           setIsLoading(true);
           try {
-            const response = await fetch(`/api/restaurants?uuid=${user!.id as UUID}`);
+            console.log("USER IS :\n\n\n\n", user);
+            console.log("POTATO")
+            const response = await fetch(`/api/restaurants?userId=${user.uuid}`);
             if (!response.ok) {
               throw new Error('Failed to fetch restaurants');
             }

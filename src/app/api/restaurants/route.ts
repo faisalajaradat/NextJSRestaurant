@@ -7,11 +7,11 @@ export async function GET(request: Request) {
 
   try {
     const url = new URL(request.url);
-    const uuid = url.searchParams.get('uuid');
+    const userId = url.searchParams.get('userId');
 
-    if (uuid) {
+    if (userId) {
       // Get restaurants for a specific UUID
-      const restaurants = await getRestaurantsByUUID(uuid);
+      const restaurants = await getRestaurantsByUUID(Number(userId));
       return NextResponse.json(restaurants);
     } else {
       // Get all restaurants if no UUID is provided
@@ -28,9 +28,13 @@ export async function POST(request: Request) {
 
   try {
     const body: RestaurantCreationAttributes = await request.json();
-    const { uuid, name, address, cuisine, meal, rating_ambiance, rating_foodquality, rating_service, notes } = body;
+    const { userId, name, address, cuisine, meal, rating_ambiance, rating_foodquality, rating_service, notes } = body;
 
-    if (!name || !address || !cuisine || !meal || rating_ambiance === undefined || rating_foodquality === undefined ||rating_service === undefined ) {
+    // Log the entire request body and specifically the userId for debugging purposes
+    console.log('Request body:', body);
+    console.log('User ID:', userId);
+
+    if (!userId || !name || !address || !cuisine || !meal || rating_ambiance === undefined || rating_foodquality === undefined ||rating_service === undefined ) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -40,7 +44,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Ratings must be numbers between 0 and 10' }, { status: 400 });
     }
 
-    const restaurant = await createRestaurant({ uuid, name, address, cuisine, meal, rating_ambiance, rating_foodquality, rating_service, notes });
+    const restaurant = await createRestaurant({ userId, name, address, cuisine, meal, rating_ambiance, rating_foodquality, rating_service, notes });
     return NextResponse.json(restaurant, { status: 201 });
   } catch (error) {
     console.error('Failed to create restaurant:', error);

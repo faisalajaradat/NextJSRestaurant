@@ -4,7 +4,6 @@ import StarRating from './starRating';
 import { toast } from 'react-hot-toast';
 import CuisineSelect from './SelectCuisine';
 import { useAuth } from '@/hooks/useAuth';
-import { UUID } from 'crypto';
 
 interface RestaurantFormProps {
   onSubmit: (restaurant: RestaurantCreationAttributes) => Promise<void>;
@@ -13,7 +12,7 @@ interface RestaurantFormProps {
 
 const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) => {
   const { user, loading } = useAuth();
-  const [formData, setFormData] = useState<Omit<RestaurantCreationAttributes, 'uuid'>>({
+  const [formData, setFormData] = useState<Omit<RestaurantCreationAttributes, 'userId' | 'uuid'>>({
     name: '',
     address: '',
     cuisine: [],
@@ -55,12 +54,12 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
 
     setIsSubmitting(true);
     try {
-      const restaurantWithUUID: RestaurantCreationAttributes = {
+      const restaurantWithUserId: RestaurantCreationAttributes = {
         ...formData,
-        uuid: user!.id as UUID
+        userId: user.uuid // Include the userId from the authenticated user
       };
-      console.log('Submitting restaurant with UUID:', restaurantWithUUID);
-      await onSubmit(restaurantWithUUID);
+      console.log('Submitting restaurant with userId:', restaurantWithUserId);
+      await onSubmit(restaurantWithUserId);
       setFormData({
         name: '',
         address: '',
@@ -90,9 +89,9 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
                value
     }));
   };
+
   const handleCuisineChange = (cuisines: string[]) => {
-    console.log(cuisines)
-    setFormData(prev => ({ ...prev, cuisine: cuisines } as RestaurantCreationAttributes));
+    setFormData(prev => ({ ...prev, cuisine: cuisines } as Omit<RestaurantCreationAttributes, 'userId' | 'uuid'>));
   };
 
   const handleRatingChange = (ratingType: 'rating_service' | 'rating_foodquality' | 'rating_ambiance') => (newRating: number) => {
@@ -144,10 +143,10 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
           className="w-full border rounded p-2"
         >
           <option value="">Select a meal</option>
-          <option value="breakfast">Breakfast</option>
-          <option value="lunch">Lunch</option>
-          <option value="dinner">Dinner</option>
-          <option value="brunch">Brunch</option>
+          <option value="Breakfast">Breakfast</option>
+          <option value="Lunch">Lunch</option>
+          <option value="Dinner">Dinner</option>
+          <option value="Brunch">Brunch</option>
         </select>
       </div>
       <div>

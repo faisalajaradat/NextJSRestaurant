@@ -8,11 +8,22 @@ export default function RestaurantsPage() {
   const [restaurants, setRestaurants] = useState<RestaurantAttributes[]>([]);
 
   const fetchRestaurants = async () => {
-    const response = await fetch('/api/restaurants');
-    const data = await response.json();
-    setRestaurants(data);
-  };
+    try {
+      const response = await fetch('/api/restaurants');
+      
+      // Ensure we handle empty response properly
+      if (!response.ok) {
+        throw new Error('Failed to fetch restaurants');
+      }
+      
+      const text = await response.text();  // Get raw response first
+      const data = text ? JSON.parse(text) : [];  // Parse only if not empty
 
+      setRestaurants(data);
+    } catch (error) {
+      console.error('Error fetching restaurants:', error);
+    }
+  };
   useEffect(() => {
     fetchRestaurants();
   }, []);

@@ -1,4 +1,3 @@
-import sequelize from './database';
 import Restaurant from '../models/Restaurant';
 
 export const initDatabase = async () => {
