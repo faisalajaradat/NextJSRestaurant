@@ -13,7 +13,7 @@ export default function Home() {
             <section className='remove-scrollbar container mx-auto my-auto'>
                 <div className='flex flex-col lg:flex-row max-w-full place-content-around items-center'>
                     <div className='flex w-full lg:w-1/2 justify-center lg:justify-start'>
-                        <h1 className='text-3xl text-center lg:text-left my-auto'>Track your Restaurants!</h1>
+                        <h1 className='text-3xl text-center lg:text-left my-auto'>Track your Restaurants</h1>
                     </div>
                     <div className='flex w-full lg:w-1/2 justify-center'>
                         <Image 
