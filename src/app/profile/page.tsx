@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient'; // Adjust this import based on your project structure
 import { User } from '@supabase/supabase-js';
 import toast from 'react-hot-toast';
 import { UUID } from 'crypto';
