@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
@@ -9,33 +9,55 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const { setUser } = useAuth();
+  const { user, setUser } = useAuth(); // Destructure user from useAuth
   const router = useRouter();
 
+  useEffect(() => {
+    if (user) {
+      router.push('/home');
+    }
+  }, [user, router]);
+  
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-
+  
     try {
+      // Step 1: Login and receive token
       const response = await fetch('/api/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-
+  
       if (!response.ok) {
         const { error } = await response.json();
         throw new Error(error);
       }
-
+  
       const data = await response.json();
       localStorage.setItem('token', data.token); // Store JWT token in localStorage
-      setUser(data.user);  
+      console.log("Login success, received token: ", data.token);
+  
+      // Step 2: Use token to fetch user data from /api/auth/me
+      const meResponse = await fetch('/api/auth/me', {
+        method: 'GET',
+        credentials: 'include',  // Assumes token is in httpOnly cookie set by server
+      });
+  
+      if (!meResponse.ok) {
+        throw new Error('Failed to authenticate with token.');
+      }
+  
+      const userData = await meResponse.json();
+      setUser(userData.user);
+      console.log("User set from /api/auth/me: ", userData.user);
+  
+      // Redirect on successful authentication
       router.push('/home');
     } catch (error: any) {
-      setError(error.message);
+      console.error("SignIn error: ", error);
+      setError(error.message || 'Failed to sign in.');
     }
   };
 

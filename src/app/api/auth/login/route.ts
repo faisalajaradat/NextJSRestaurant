@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '@/models/User';
 import { initDatabase } from '@/lib/database';
+import { useAuth } from '@/hooks/useAuth';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key'; 
 
@@ -29,7 +30,6 @@ export async function POST(req: Request) {
     }
 
     const token = jwt.sign({ uuid: user.uuid, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
-
     return new NextResponse(JSON.stringify({ message: 'Login successful' }), {
       status: 200,
       headers: {

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
+import { useAuth } from '@/hooks/useAuth';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
@@ -15,7 +16,6 @@ export async function GET(request: Request) {
     // Verify JWT token
     const decoded = jwt.verify(authToken, JWT_SECRET);
     console.log('Decoded token:', decoded);
-
     // Return user info
     return NextResponse.json({ message: 'Authenticated', user: decoded }, { status: 200 });
   } catch (error) {

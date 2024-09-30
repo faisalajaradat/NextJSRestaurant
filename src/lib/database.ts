@@ -1,6 +1,6 @@
 import { Sequelize, Options } from 'sequelize';
 import Restaurant, { RestaurantAttributes, RestaurantCreationAttributes } from '../models/Restaurant';
-import config from '../../config/config.json';
+import config from '../../config/config';
 import User, { UserAttributes, UserCreationAttributes } from '@/models/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';

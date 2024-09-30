@@ -30,21 +30,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const fetchUser = async () => {
       setLoading(true);
-
-      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-
+  
       try {
         const response = await fetch('/api/auth/me', {
           method: 'GET',
-          credentials: 'include',
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: 'include',  // Ensures that cookies are included automatically
         });
-
+  
         if (response.ok) {
           const data = await response.json();
           setUser(data.user);
@@ -58,9 +50,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setLoading(false);
       }
     };
-
+  
     fetchUser();
   }, []);
+  
 
   const signOut = async () => {
     try {
@@ -76,8 +69,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  // Add a method to set user state
+  const setUserState = (user: User | null) => {
+    setUser(user);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, signOut, setUser }}>
+    <AuthContext.Provider value={{ user, loading, signOut, setUser: setUserState }}>
       {children}
     </AuthContext.Provider>
   );
