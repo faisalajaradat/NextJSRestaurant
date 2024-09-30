@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { User } from '@supabase/supabase-js';
 import toast from 'react-hot-toast';
 import { UUID } from 'crypto';
+import { useAuth } from '@/hooks/useAuth';
 
 const ProfilePage = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, setUser } = useAuth();
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState('');
   const [currentName, setCurrentName] = useState('');
@@ -15,22 +15,22 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      // const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         setUser(user);
         // Fetch profile data
-        const { data: profileData, error } = await supabase
-          .from('profiles')
-          .select('username')
-          .eq('id', user.id as UUID)
-          .single();
+        // const { data: profileData, error } = await supabase
+          // .from('profiles')
+          // .select('username')
+          // .eq('id', user.id as UUID)
+          // .single();
         
-        if (profileData) {
-          setName(profileData.username || '');
-          setCurrentName(profileData.username || '');
-        } else if (error) {
-          console.error('Error fetching profile:', error);
-        }
+        // if (profileData) {
+        //   setName(profileData.username || '');
+        //   setCurrentName(profileData.username || '');
+        // } else if (error) {
+        //   console.error('Error fetching profile:', error);
+        // }
       } else {
         router.push('/signin');
       }
@@ -46,18 +46,18 @@ const ProfilePage = () => {
       return;
     }
 
-    const { error } = await supabase
-      .from('profiles')
-      .update({ username: name })
-      .eq('id', user?.id);
+    // const { error } = await supabase
+    //   .from('profiles')
+    //   .update({ username: name })
+    //   .eq('id', user?.id);
     
-    if (error) {
-      console.error('Error updating profile:', error);
-      toast.error('Failed to update profile. Please try again.');
-    } else {
-      setCurrentName(name);
-      toast.success('Profile updated successfully!');
-    }
+    // if (error) {
+    //   console.error('Error updating profile:', error);
+    //   toast.error('Failed to update profile. Please try again.');
+    // } else {
+    //   setCurrentName(name);
+    //   toast.success('Profile updated successfully!');
+    // }
   };
 
   if (loading) {
@@ -88,7 +88,7 @@ const ProfilePage = () => {
           <label className="block text-gray-700 text-sm font-bold mb-2">
             User ID
           </label>
-          <p className="text-gray-700">{user.id}</p>
+          <p className="text-gray-700">{user.uuid}</p>
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
