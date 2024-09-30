@@ -163,7 +163,7 @@ export const deleteRestaurant = async (id: number): Promise<boolean> => {
 };
 
 // Get Restaurants by UUID
-export const getRestaurantsByUUID = async (userId: number) => {
+export const getRestaurantsByUUID = async (userId: string) => {
   await initModel();
   
   // Validate if the passed UUID is valid

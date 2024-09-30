@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const { setUser } = useAuth();
   const router = useRouter();
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -30,7 +32,7 @@ export default function SignIn() {
 
       const data = await response.json();
       localStorage.setItem('token', data.token); // Store JWT token in localStorage
-
+      setUser(data.user);  
       router.push('/home');
     } catch (error: any) {
       setError(error.message);

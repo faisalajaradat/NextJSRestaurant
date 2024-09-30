@@ -7,11 +7,11 @@ export async function GET(request: Request) {
 
   try {
     const url = new URL(request.url);
-    const userId = url.searchParams.get('userId');
+    const userId = url.searchParams.get('userId')?.toString();
 
     if (userId) {
       // Get restaurants for a specific UUID
-      const restaurants = await getRestaurantsByUUID(Number(userId));
+      const restaurants = await getRestaurantsByUUID(userId);
       return NextResponse.json(restaurants);
     } else {
       // Get all restaurants if no UUID is provided
@@ -23,6 +23,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Failed to fetch restaurants' }, { status: 500 });
   }
 }
+
 export async function POST(request: Request) {
   await initModel();
 
@@ -34,7 +35,7 @@ export async function POST(request: Request) {
     console.log('Request body:', body);
     console.log('User ID:', userId);
 
-    if (!userId || !name || !address || !cuisine || !meal || rating_ambiance === undefined || rating_foodquality === undefined ||rating_service === undefined ) {
+    if (!userId || !name || !address || !cuisine || !meal || rating_ambiance === undefined || rating_foodquality === undefined || rating_service === undefined) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 

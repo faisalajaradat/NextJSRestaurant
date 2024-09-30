@@ -158,7 +158,7 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
         <label htmlFor="rating_foodquality" className="block">Food Quality Rating:</label>
         <StarRating rating={formData.rating_foodquality} onRatingChange={handleRatingChange('rating_foodquality')} maxRating={5} />
         {formErrors.rating_foodquality && <p className="text-red-500">Please set a food quality rating</p>}
-      </div>
+      </div> 
       <div>
         <label htmlFor="rating_ambiance" className="block">Ambiance Rating:</label>
         <StarRating rating={formData.rating_ambiance} onRatingChange={handleRatingChange('rating_ambiance')} maxRating={5} />

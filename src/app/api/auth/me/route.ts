@@ -3,17 +3,18 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
-export async function GET(req: Request) {
+export async function GET(request: Request) {
   try {
-    const cookie = req.headers.get('cookie');
+    const cookie = request.headers.get('cookie');
     const authToken = cookie?.split('; ').find(c => c.startsWith('authToken='))?.split('=')[1];
 
     if (!authToken) {
-      return NextResponse.json({ message: 'Not authenticated' }, { status: 401 });
+      return NextResponse.json({ message: 'No auth token found' }, { status: 401 });
     }
 
     // Verify JWT token
     const decoded = jwt.verify(authToken, JWT_SECRET);
+    console.log('Decoded token:', decoded);
 
     // Return user info
     return NextResponse.json({ message: 'Authenticated', user: decoded }, { status: 200 });

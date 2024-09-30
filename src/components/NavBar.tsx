@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import Image from 'next/image';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { usePathname } from 'next/navigation';
+import React from 'react';
 
 export default function Navbar() {
   const { user, loading, signOut } = useAuth();
@@ -13,9 +14,7 @@ export default function Navbar() {
   const linkStyle = (path: string) => {
     const baseStyle = 'font-bold hover:text-blue-500 transition-colors duration-200';
     const activeStyle = 'text-blue-500 underline underline-offset-4';
-    return pathname === path
-      ? `${baseStyle} ${activeStyle}`
-      : `${baseStyle} text-black`;
+    return pathname === path ? `${baseStyle} ${activeStyle}` : `${baseStyle} text-black`;
   };
 
   return (
