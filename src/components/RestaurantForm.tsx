@@ -149,18 +149,18 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
           <option value="Brunch">Brunch</option>
         </select>
       </div>
-      <div>
-        <label htmlFor="rating_service" className="block">Service Rating:</label>
+      <div >
+        <label htmlFor="rating_service" className="block my-4">Service Rating:</label>
         <StarRating rating={formData.rating_service} onRatingChange={handleRatingChange('rating_service')} maxRating={5} />
         {formErrors.rating_service && <p className="text-red-500">Please set a service rating</p>}
       </div>
-      <div>
-        <label htmlFor="rating_foodquality" className="block">Food Quality Rating:</label>
+      <div >
+        <label htmlFor="rating_foodquality" className="block my-4">Food Quality Rating:</label>
         <StarRating rating={formData.rating_foodquality} onRatingChange={handleRatingChange('rating_foodquality')} maxRating={5} />
         {formErrors.rating_foodquality && <p className="text-red-500">Please set a food quality rating</p>}
       </div> 
-      <div>
-        <label htmlFor="rating_ambiance" className="block">Ambiance Rating:</label>
+      <div >
+        <label htmlFor="rating_ambiance" className="block my-4">Ambiance Rating:</label>
         <StarRating rating={formData.rating_ambiance} onRatingChange={handleRatingChange('rating_ambiance')} maxRating={5} />
         {formErrors.rating_ambiance && <p className="text-red-500">Please set an ambiance rating</p>}
       </div>
