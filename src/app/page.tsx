@@ -26,7 +26,7 @@ export default async function HomePage() {
                             Track your Restaurants!
                         </h1>
                         <p className="text-lg lg:text-xl text-gray-700">
-                            A platform that allows users to rate restaurants they have eaten at. Restaurants are ranked based on the average rating, and users can view restaurants they've rated and the ratings they've given.
+                            A platform that allows users to rate restaurants they have eaten at. Restaurants are ranked based on the average rating, and users can view restaurants they rated and the ratings they have given.
                         </p>
                         <button className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg w-max self-center lg:self-start">
                             View Restaurants
