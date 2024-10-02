@@ -13,6 +13,7 @@ interface AuthContextType {
   loading: boolean;
   signOut: () => void;
   setUser: (user: User | null) => void; // Expose a setter to manually update the user state
+  fetchUser: () => Promise<void>; // Expose a function to manually fetch the user
 }
 
 // Create AuthContext using `createContext`
@@ -27,30 +28,33 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      setLoading(true);
-  
-      try {
-        const response = await fetch('/api/auth/me', {
-          method: 'GET',
-          credentials: 'include',  // Ensures that cookies are included automatically
-        });
-  
-        if (response.ok) {
-          const data = await response.json();
-          setUser(data.user);
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        console.error('Failed to fetch user:', error);
+
+
+  const fetchUser = async () => {
+    setLoading(true);
+
+    try {
+      const response = await fetch('/api/auth/me', {
+        method: 'GET',
+        credentials: 'include',  // Ensures that cookies are included automatically
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+      } else {
         setUser(null);
-      } finally {
-        setLoading(false);
       }
-    };
-  
+    } catch (error) {
+      console.error('Failed to fetch user:', error);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  useEffect(() => {
     fetchUser();
   }, []);
   
@@ -75,7 +79,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signOut, setUser: setUserState }}>
+    <AuthContext.Provider value={{ user, loading, signOut, setUser: setUserState, fetchUser }}>
       {children}
     </AuthContext.Provider>
   );

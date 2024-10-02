@@ -1,50 +1,75 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { UUID } from 'crypto';
 import { useAuth } from '@/hooks/useAuth';
 
-const ProfilePage = () => {
-  const { user, setUser } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [name, setName] = useState('');
-  const [currentName, setCurrentName] = useState('');
-  const router = useRouter();
 
+
+const ProfilePage = () => {
+  const { user, setUser, fetchUser } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [email, setEmail] = useState('');
+  const [currentEmail, setCurrentEmail] = useState('');
+  const router = useRouter();
+  
   useEffect(() => {
     const getUser = async () => {
-      // const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        setUser(user);
-        // Fetch profile data
-        // const { data: profileData, error } = await supabase
-          // .from('profiles')
-          // .select('username')
-          // .eq('id', user.id as UUID)
-          // .single();
-        
-        // if (profileData) {
-        //   setName(profileData.username || '');
-        //   setCurrentName(profileData.username || '');
-        // } else if (error) {
-        //   console.error('Error fetching profile:', error);
-        // }
-      } else {
+      if (!user) {
         router.push('/signin');
+      }else{
+        console.log(user);
+        setEmail(user.email);
+        setCurrentEmail(user.email);
       }
       setLoading(false);
     };
   
     getUser();
-  }, [router]);
+  }, [router,user]);
 
   const updateProfile = async () => {
-    if (name === currentName) {
+    if (email === currentEmail) {
       toast('No changes to save.');
       return;
     }
+    if (user) {
+      try {
+        // Automatically send the authenticated user's UUID along with the email update
+        const response = await fetch('/api/update-user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            uuid: user?.uuid,
+            email,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          await fetchUser();
+          console.log(await fetchUser());
+          // setUser({ ...user, email });
+          // setCurrentEmail(email);
+          toast.success('Profile updated successfully!');
+        } else {
+          toast.error('Failed to update profile. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        toast.error('Failed to update profile. Please try again.');
+      }
+    }
+  
+  
+    
+    
+
+      
+      
 
     // const { error } = await supabase
     //   .from('profiles')
@@ -78,12 +103,7 @@ const ProfilePage = () => {
           </label>
           <p className="text-gray-700">{user.email}</p>
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            User name
-          </label>
-          <p className="text-gray-700">{currentName}</p>
-        </div>
+        
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             User ID
@@ -92,12 +112,12 @@ const ProfilePage = () => {
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
-            Name
+            Update Email
           </label>
           <input 
             type="text" 
-            value={name} 
-            onChange={(e) => setName(e.target.value)}
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>

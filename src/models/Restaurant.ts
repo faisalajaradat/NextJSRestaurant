@@ -1,5 +1,6 @@
+'use server';
 import { Model, DataTypes, Sequelize, Optional } from 'sequelize';
-import User from './User';  // Import the User model
+import User from './User'; 
 import { CUISINE_OPTIONS } from '@/lib/constants';
 
 // Define Cuisine and Mealtype as types

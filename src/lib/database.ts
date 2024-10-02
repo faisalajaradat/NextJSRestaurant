@@ -5,6 +5,7 @@ import User, { UserAttributes, UserCreationAttributes } from '@/models/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+
 const env = process.env.NODE_ENV || 'development';
 const sequelizeConfig = (config as { [key: string]: Options })[env];
 
@@ -77,19 +78,47 @@ export const loginUser = async (email: string, password: string): Promise<string
 };
 
 // Verify JWT Token (Middleware)
-export const authenticateToken = (req: any, res: any, next: any) => {
-  const token = req.headers['authorization'];
-
-  if (!token) return res.status(401).send('Access denied');
+export const authenticateToken = (token: string) => {
+  if (!token) {
+    return { error: 'Access denied', status: 401 };
+  }
 
   try {
     const verified = jwt.verify(token, jwtSecret);
-    req.user = verified;
-    next();
+    return { user: verified }; // Return the decoded user from the token
   } catch (error) {
-    res.status(400).send('Invalid token');
+    return { error: 'Invalid token', status: 400 };
   }
 };
+
+
+// Update user
+// Update User by UUID
+export const updateUser = async (uuid: string, updatedData: Partial<UserAttributes>): Promise<UserAttributes | null> => {
+  await initModel();
+  try {
+    // Find the user by their UUID
+    const user = await User.findOne({ where: { uuid } });
+
+    // If user not found, return null
+    if (!user) {
+      console.error('User not found');
+      return null;
+    }
+
+    // Update user with the provided data
+    await user.update(updatedData);
+
+    // Return the updated user data (as plain object)
+    return user.get({ plain: true }) as UserAttributes;
+  } catch (error) {
+    console.error('Failed to update user:', error);
+    throw error;
+  }
+};
+
+
+
 
 // Restaurant Functions
 
@@ -97,7 +126,6 @@ export const authenticateToken = (req: any, res: any, next: any) => {
 export const createRestaurant = async (data: RestaurantCreationAttributes): Promise<RestaurantAttributes> => {
   await initModel();
   try {
-    // Do not pass `uuid` manually. Let Sequelize generate it.
     const restaurantData = {
       ...data,
     };
@@ -189,6 +217,7 @@ export default {
   registerUser,
   loginUser,
   authenticateToken,
+  updateUser,
   // Restaurant operations
   createRestaurant,
   getRestaurantById,
