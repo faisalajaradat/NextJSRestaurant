@@ -23,7 +23,7 @@ const CreateRestaurant: React.FC<CreateRestaurantProps> = ({ pass = defaultPass 
 
   return (
     <div>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog open={isOpen} onOpenChange={setIsOpen} >
         <DialogTrigger
           onClick={isOpen ? handleClose : handleOpen}
           className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center focus:outline-none relative"
@@ -34,12 +34,12 @@ const CreateRestaurant: React.FC<CreateRestaurantProps> = ({ pass = defaultPass 
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
           </span>
-        </DialogTrigger>
-        <DialogContent>
+        </DialogTrigger >
+        <DialogContent className= "bg-[#ADC4CE]">
           <DialogHeader>
             <DialogTitle>Add Restaurant</DialogTitle>
-            <DialogDescription>
-              <RestaurantForm onSubmit={pass} onClose={handleClose} />
+            <DialogDescription >
+              <RestaurantForm onSubmit={pass} onClose={handleClose}  />
             </DialogDescription>
           </DialogHeader>
         </DialogContent>

@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CUISINE_OPTIONS} from '@/lib/constants';
 import toast from 'react-hot-toast';
-import { useAuth } from '../hooks/useAuth';
-
-
-
 interface CuisineSelectProps {
   selectedCuisines: string[];
   onChange: (cuisines: string[]) => void;
@@ -78,7 +74,7 @@ const CuisineSelect: React.FC<CuisineSelectProps> = ({ selectedCuisines, onChang
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <div className="flex flex-wrap gap-2 p-2 border rounded">
+      <div className="flex flex-wrap bg-white gap-2 p-2 border rounded">
         {selectedCuisines.map(cuisine => (
           <span key={cuisine} className="bg-blue-100 px-2 py-1 rounded flex items-center">
             {cuisine}

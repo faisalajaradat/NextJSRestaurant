@@ -59,11 +59,10 @@ const StarRating: React.FC<StarRatingProps> = ({ rating, onRatingChange, maxRati
               position: 'absolute',
               top: 0,
               left: 0,
-              width: '50%',
+              width: '40%',
               height: '100%',
               color: '#ffd700',
               overflow: 'hidden',
-             // clipPath: 'inset(0 0 0 0%)',
             }}
           >
             &#9733;

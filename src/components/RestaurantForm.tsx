@@ -8,6 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 interface RestaurantFormProps {
   onSubmit: (restaurant: RestaurantCreationAttributes) => Promise<void>;
   onClose: () => void;
+  className?: string;
 }
 
 const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) => {
@@ -100,7 +101,7 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 ${className}">
       <div>
         <label htmlFor="name" className="block">Name:</label>
         <input
