@@ -47,20 +47,27 @@ export default async function HomePage() {
             </section>
 
                 {/* Section for MAP + Total Restaurants */}
-            <section className="container mx-auto mt-8 ">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Statistics</h2>
-                <p className="text-lg">
-                <strong>Total Restaurants:</strong> {totalRestaurants}
-                </p>
-                {highestRatedRestaurant && (
-                <div className="mt-4">
-                    <h3 className="text-xl font-semibold text-gray-900">Highest Rated Restaurant</h3>
-                    <p>
-                    <strong>{highestRatedRestaurant.name}</strong> - Average Rating: 
-                    {((highestRatedRestaurant.rating_ambiance + highestRatedRestaurant.rating_foodquality + highestRatedRestaurant.rating_service) / 3).toFixed(1)}
-                    </p>
+            <section className="container mx-auto mt-8 flex flex-col items-center">
+                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Restaurant Stats</h2>
+                <div className='flex flex-row w-full justify-center items-center '>
+                    <div className='basis-1/2 text-center'>
+                        <p className="text-lg">
+                        <strong>Total Restaurants:</strong> {totalRestaurants}
+                        </p>
+                    </div>
+                    <div className='basis-1/2 text-center'> 
+                        {highestRatedRestaurant && (
+                        <div >
+                            <h3 className="text-xl font-semibold text-gray-900">Highest Rated Restaurant</h3>
+                            <p>
+                            <strong>{highestRatedRestaurant.name}</strong> - Average Rating: 
+                            {((highestRatedRestaurant.rating_ambiance + highestRatedRestaurant.rating_foodquality + highestRatedRestaurant.rating_service) / 3).toFixed(1)}
+                            </p>
+                        </div>
+                        )}
+                    </div>
                 </div>
-                )}
+                
             </section>
         </div>
     )
