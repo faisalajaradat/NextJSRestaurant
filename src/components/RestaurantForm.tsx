@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Libraries, useLoadScript } from '@react-google-maps/api'; 
 import { RestaurantCreationAttributes, Mealtype } from '../models/Restaurant';
 import StarRating from './starRating';
 import { toast } from 'react-hot-toast';
@@ -12,7 +13,10 @@ interface RestaurantFormProps {
 }
 
 const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) => {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
+  const addressInputRef = useRef<HTMLInputElement>(null);
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+
   const [formData, setFormData] = useState<Omit<RestaurantCreationAttributes, 'userId' | 'uuid'>>({
     name: '',
     address: '',
@@ -31,6 +35,73 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+
+  const libraries: Libraries = ['places']; 
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
+    libraries,
+  });
+
+  // Get the user's current location using Geolocation
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation({ lat: latitude, lng: longitude });
+        },
+        (error) => {
+          toast.error('Unable to retrieve your location.');
+        }
+      );
+    }
+  }, []);
+
+  // Initialize Google Places Autocomplete and address autofill
+  useEffect(() => {
+    if (isLoaded && addressInputRef.current && window.google) {
+      autocompleteRef.current = new window.google.maps.places.Autocomplete(addressInputRef.current, {
+        bounds: userLocation ? new window.google.maps.LatLngBounds(userLocation) : undefined,
+        fields: ['address_components', 'geometry', 'name'],
+        types: ['restaurant'],
+      });
+
+      const handlePlaceChanged = () => {
+        const place = autocompleteRef.current?.getPlace();
+        if (place && place.address_components) {
+          const addressComponents = place.address_components;
+          const streetNumber = addressComponents.find(ac => ac.types.includes('street_number'))?.long_name || '';
+          const route = addressComponents.find(ac => ac.types.includes('route'))?.long_name || '';
+          const locality = addressComponents.find(ac => ac.types.includes('locality'))?.long_name || '';
+          const administrativeArea = addressComponents.find(ac => ac.types.includes('administrative_area_level_1'))?.short_name || '';
+          const country = addressComponents.find(ac => ac.types.includes('country'))?.long_name || '';
+          const postalCode = addressComponents.find(ac => ac.types.includes('postal_code'))?.long_name || '';
+
+          const formattedAddress = `${streetNumber} ${route}, ${locality}, ${administrativeArea} ${postalCode}, ${country}`;
+
+          setFormData(prev => ({
+            ...prev,
+            name: place.name || prev.name,
+            address: formattedAddress
+          }));
+        }
+      };
+
+      autocompleteRef.current.addListener('place_changed', () => handlePlaceChanged());
+
+      return () => {
+        if (autocompleteRef.current) {
+          google.maps.event.clearInstanceListeners(autocompleteRef.current);
+        }
+      };
+    }
+  }, [isLoaded, userLocation]);
+
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFormData(prev => ({ ...prev, address: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,10 +191,12 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
           type="text"
           id="address"
           name="address"
+          ref={addressInputRef}
           value={formData.address}
-          onChange={handleChange}
+          onChange={handleAddressChange}
           required
           className="w-full border rounded p-2"
+          placeholder="Start typing an address..."
         />
       </div>
       <div>

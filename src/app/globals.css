@@ -94,3 +94,14 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5); /* Slightly more opaque on hover */
 }
+
+.pac-container {
+  z-index: 1000 !important; 
+  cursor: auto !important;
+}.pac-item{
+  cursor: pointer !important;
+}
+
+.form-container {
+  position: relative;
+}
