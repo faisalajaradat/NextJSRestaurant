@@ -195,7 +195,7 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
           value={formData.address}
           onChange={handleAddressChange}
           required
-          className="w-full border rounded p-2"
+          className="w-full border rounded p-2 z-50"
           placeholder="Start typing an address..."
         />
       </div>

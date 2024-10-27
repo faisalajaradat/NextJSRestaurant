@@ -71,6 +71,12 @@ export default function HomePage() {
     setFilteredRestaurants(filtered);
   }, [searchTerm, restaurants]);
 
+  useEffect(() => {
+    // Disable Radix ui dialog pointer events lockout
+    setTimeout(() => (document.body.style.pointerEvents = ""), 0)    
+  })
+
+  
   return (
     <div className="flex flex-col" style={{ minHeight: `calc(100vh-7vh)`, overflow: 'hidden' }}>
       {loading ? (
@@ -91,7 +97,7 @@ export default function HomePage() {
           )}
         </div>
       ) : (
-        <div className="flex-grow flex items-center justify-center" style={{ overflow: 'hidden' }}>
+        <div className="flex-grow flex items-center justify-center" style={{  overflow: 'hidden'}}>
           <div className="text-center">
             <p>Please log in to view restaurants.</p>
           </div>

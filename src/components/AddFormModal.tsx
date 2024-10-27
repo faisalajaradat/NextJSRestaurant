@@ -10,6 +10,8 @@ import {
 import RestaurantForm from './RestaurantForm';
 import { RestaurantCreationAttributes } from '@/models/Restaurant';
 
+
+
 interface CreateRestaurantProps {
   pass?: (restaurant: RestaurantCreationAttributes) => Promise<void>;
 }
@@ -23,8 +25,9 @@ const CreateRestaurant: React.FC<CreateRestaurantProps> = ({ pass = defaultPass 
 
   return (
     <div>
-      <Dialog open={isOpen} onOpenChange={setIsOpen} >
-        <DialogTrigger
+      <Dialog open={isOpen}    
+      onOpenChange={setIsOpen} >
+        <DialogTrigger asChild
           onClick={isOpen ? handleClose : handleOpen}
           className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center focus:outline-none relative"
         >
@@ -35,13 +38,28 @@ const CreateRestaurant: React.FC<CreateRestaurantProps> = ({ pass = defaultPass 
             </svg>
           </span>
         </DialogTrigger >
-        <DialogContent className= "bg-[#ADC4CE]">
+        <DialogContent className= "bg-[#ADC4CE]"
+        onInteractOutside={(e) => {
+          const hasPacContainer = e.composedPath().some((el: EventTarget) => {
+            if ("classList" in el) {
+              return Array.from((el as Element).classList).includes("pac-container")
+            }
+            return false
+          })
+        
+          if (hasPacContainer) {
+            e.preventDefault()
+          }
+        }}
+        >
           <DialogHeader>
             <DialogTitle>Add Restaurant</DialogTitle>
             <DialogDescription >
               <RestaurantForm onSubmit={pass} onClose={handleClose}  />
             </DialogDescription>
           </DialogHeader>
+
+
         </DialogContent>
       </Dialog>
     </div>
