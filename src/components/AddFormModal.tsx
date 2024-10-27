@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,6 @@ import RestaurantForm from './RestaurantForm';
 import { RestaurantCreationAttributes } from '@/models/Restaurant';
 
 
-
 interface CreateRestaurantProps {
   pass?: (restaurant: RestaurantCreationAttributes) => Promise<void>;
 }
@@ -22,7 +21,13 @@ const CreateRestaurant: React.FC<CreateRestaurantProps> = ({ pass = defaultPass 
   const [isOpen, setIsOpen] = useState(false);
   const handleClose = () => setIsOpen(false);
   const handleOpen = () => setIsOpen(true);
-
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        document.body.style.pointerEvents = ''; // Ensure the body allows pointer events
+      }, 0);
+    }
+  }, [isOpen]);
   return (
     <div>
       <Dialog open={isOpen}    
