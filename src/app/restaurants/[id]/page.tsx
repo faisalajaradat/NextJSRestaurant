@@ -10,7 +10,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 
-export default function RestaurantDetailPage({ params }: { params: { id: string } }) {
+export default async function RestaurantDetailPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   return (
     <div className="container mx-auto p-4">
       <Breadcrumb className='my-4'>

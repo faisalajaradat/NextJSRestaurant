@@ -26,7 +26,7 @@ export default function Navbar() {
             </Link>
             <div className='space-x-4'>
               <Link href='/home' className={linkStyle('/home')}> Home </Link>
-              <Link href='/restaurants' className={linkStyle('/restaurants')}> Restaurants </Link>
+              <Link href='/restaurants/list' className={linkStyle('/restaurants')}> Restaurants </Link>
             </div>
           </div>
           <div>

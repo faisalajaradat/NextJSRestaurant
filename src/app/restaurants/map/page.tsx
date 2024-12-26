@@ -1,0 +1,55 @@
+'use client';
+
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+
+// Component to update map center dynamically
+function UpdateMapCenter({ center }: { center: [number, number] }) {
+  const map = useMap();
+  useEffect(() => {
+    if (center) {
+      map.setView(center, 15); // Update map view when center changes
+    }
+  }, [center, map]);
+  return null;
+}
+
+export default function RestaurantsMap() {
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation({ lat: latitude, lng: longitude });
+          toast.success('Location retrieved successfully!');
+        },
+        (error) => {
+          toast.error('Unable to retrieve your location.');
+        }
+      );
+    }
+  }, []);
+
+  // Default location (fallback)
+  const defaultCenter: [number, number] = [51.505, -0.09];
+
+  return (
+    <div style={{ height: '100vh', width: '100%' }}>
+      <MapContainer
+        center={userLocation ? [userLocation.lat, userLocation.lng] : defaultCenter}
+        zoom={13}
+        scrollWheelZoom={false}
+        style={{ height: '100%', width: '100%' }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {userLocation && <UpdateMapCenter center={[userLocation.lat, userLocation.lng]} />}
+      </MapContainer>
+    </div>
+  );
+}

@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   console.log("req is ", req);
 
   // Retrieve authToken from the cookies
-  const authToken = cookies().get('authToken')?.value;
+  const authToken = (await cookies()).get('authToken')?.value;
 
   // Ensure authToken is present
   if (!authToken) {
