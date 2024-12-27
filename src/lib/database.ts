@@ -62,7 +62,7 @@ export const loginUser = async (email: string, password: string): Promise<string
       return null;
     }
 
-    const validPassword = bcrypt.compareSync(password, user.password);
+    const validPassword = bcrypt.compare(password, user.password);
     if (!validPassword) {
       console.log('Invalid password');
       return null;

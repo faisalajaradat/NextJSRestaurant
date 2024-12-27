@@ -13,7 +13,6 @@ Readonly<{
     children:React.ReactNode;
 }> ){
 const pathname = usePathname();
-console.log("pathname is " + pathname);
   return (
     <div className="container mx-auto p-4">
       <Breadcrumb className='my-4'>

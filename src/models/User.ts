@@ -9,7 +9,6 @@ export interface UserAttributes {
   updatedAt?: Date;
 }
 
-// When creating a user, 'uuid' and 'id' should be optional
 export interface UserCreationAttributes extends Optional<UserAttributes, 'uuid'> {}
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {

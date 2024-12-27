@@ -9,18 +9,20 @@ import toast from "react-hot-toast";
 import { useAuth } from "@/hooks/useAuth"
 
 export default function HomePage() {
-  const { user, loading, setUser } = useAuth()
+  const {user, loading, setUser } = useAuth()
   const [restaurants, setRestaurants] = useState<RestaurantAttributes[]>([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState<RestaurantAttributes[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
   const fetchRestaurants = useCallback(async () => {
+    console.log("USER IS " + user?.uuid);
     if (!user) return;
     setIsLoading(true);
     try {
       const response = await fetch(`/api/restaurants?userId=${user.uuid}`);
       if (!response.ok) {
+        console.log("USER IS " + user)
         throw new Error('Failed to fetch restaurants');
       }
       const data = await response.json();

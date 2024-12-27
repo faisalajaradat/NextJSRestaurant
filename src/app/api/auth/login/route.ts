@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '@/models/User';
 import { initDatabase } from '@/lib/database';
-import { useAuth } from '@/hooks/useAuth';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key'; 
 
@@ -19,12 +18,16 @@ export async function POST(req: Request) {
     const sequelize = await initDatabase();
     User.initModel(sequelize);
 
-    const user = await User.findOne({ where: { email } });
+    const user = (await User.findOne({ where: { email } }))?.get();
+    
     if (!user) {
       return NextResponse.json({ message: 'Invalid email or password' }, { status: 400 });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+
+    const isPasswordValid = bcrypt.compareSync(password,user.password);
+    
     if (!isPasswordValid) {
       return NextResponse.json({ message: 'Invalid email or password' }, { status: 400 });
     }

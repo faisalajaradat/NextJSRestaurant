@@ -59,9 +59,8 @@ const CreateRestaurant: React.FC<CreateRestaurantProps> = ({ pass = defaultPass 
         >
           <DialogHeader>
             <DialogTitle>Add Restaurant</DialogTitle>
-            <DialogDescription >
+            <DialogDescription > </DialogDescription>
               <RestaurantForm onSubmit={pass} onClose={handleClose}  />
-            </DialogDescription>
           </DialogHeader>
 
 
