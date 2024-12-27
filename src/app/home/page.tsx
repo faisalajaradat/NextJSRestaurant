@@ -84,7 +84,7 @@ export default function HomePage() {
       {loading ? (
         <p>Loading...</p>
       ) : user ? (
-        <div className="flex-grow container mx-auto p-0" style={{ overflow: 'hidden' }}>
+        <div className="flex-grow container mx-auto p-0" style={{ overflow: 'visible' }}>
           <div className='flex justify-between space-x-10 my-8'>
             <div className='w-[70%] max-w-[750px]'>
               <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
