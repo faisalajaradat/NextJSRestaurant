@@ -20,9 +20,9 @@ const RestaurantList: React.FC<RestaurantListProps> = ({ restaurants }) => {
 
 
   return (
-    <div className="flex flex-wrap space-x4 dark">
+    <div className="flex flex-wrap space-x-6 dark">
       {restaurants.map((restaurant) => (
-        <div key={restaurant.id} className="flex-none w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2">
+        <div key={restaurant.id} className="flex-none w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-0">
             <Link href={`/restaurants/${restaurant.id}`} className="hover:bg-white">
                 <Card>
                     <CardHeader>
@@ -31,7 +31,7 @@ const RestaurantList: React.FC<RestaurantListProps> = ({ restaurants }) => {
                     </CardHeader>
                     <CardContent style={{whiteSpace:'nowrap', overflow:'hidden'}}>
                     <p><strong>Address:</strong> {restaurant.address}</p>
-                    <p><strong>Cuisine:</strong> {renderCuisine(restaurant.cuisine)} </p>
+                    <p className='mb-2'><strong>Cuisine:</strong> {renderCuisine(restaurant.cuisine)} </p>
                     <StarRating rating={calculateAverage(restaurant.rating_service, restaurant.rating_foodquality, restaurant.rating_ambiance)} onRatingChange={() => {}} maxRating={5} allowHover={false} />
                     </CardContent>
                 </Card>

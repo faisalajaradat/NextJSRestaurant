@@ -29,15 +29,15 @@ const CreateRestaurant: React.FC<CreateRestaurantProps> = ({ pass = defaultPass 
     }
   }, [isOpen]);
   return (
-    <div>
+    <div className="flex items-center justify-center">
       <Dialog open={isOpen}    
       onOpenChange={setIsOpen} >
         <DialogTrigger asChild
           onClick={isOpen ? handleClose : handleOpen}
-          className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center focus:outline-none relative cursor-pointer"
+          className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center focus:outline-none relative cursor-pointer"
         >
-          <span className={`absolute transform transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+          <span className={`absolute transform transition-transform duration-300 align-center ${isOpen ? 'rotate-45' : ''}`}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>

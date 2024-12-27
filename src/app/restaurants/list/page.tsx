@@ -27,9 +27,10 @@ export default function RestaurantsList() {
     fetchRestaurants();
   }, []);
   return (
-    
+      <div className='flex container px-0 pt-5'>
+        <RestaurantList restaurants={restaurants}/>
+      </div>
 
-      <RestaurantList restaurants={restaurants}/>
     
   );
 }

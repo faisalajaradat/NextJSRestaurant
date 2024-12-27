@@ -61,7 +61,7 @@ export default function RestaurantsMap() {
   const defaultCenter: [number, number] = [51.505, -0.09];
 
   return (
-    <div style={{ height: '100vh', width: '100%' }}>
+    <div style={{ height: '80vh', width: '100%' }}>
       
     {typeof window !== 'undefined' && (
       <MapContainer
@@ -87,7 +87,8 @@ export default function RestaurantsMap() {
             <div key={restaurant.id}>
               <Marker position={[restaurant.latitude, restaurant.longitude]}>
                 <Popup>
-                  {restaurant.name}
+                  <b className='text-lg'>{restaurant.name}</b>
+                  
                   <br />
                   {restaurant.address}
                 </Popup>

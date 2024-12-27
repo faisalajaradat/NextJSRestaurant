@@ -19,7 +19,7 @@ export default function Navbar() {
   return (
     <nav className="bg-slate-300 p-4">
       {loading ? <span>Loading...</span> : (
-        <div className="h-[7vh] container mx-auto flex justify-between items-center">
+        <div className="h-[7vh] container mx-auto flex justify-between items-center px-0">
           <div className='flex-nowrap flex items-center'>
             <Link href="/" className="text-black text-2xl mr-10 font-bold hover:text-blue-500">
               Restaurant Tracker
@@ -36,8 +36,8 @@ export default function Navbar() {
                   <DropdownMenuTrigger className='focus:outline-none'>
                     <Image
                       src="/profile_pic.webp"
-                      width={30}
-                      height={30}
+                      width={40}
+                      height={40}
                       alt="default profile pic"
                       style={{ cursor: 'pointer', userSelect: 'none' }}
                       className='hover:border-solid hover:border-black hover:border rounded-full transition-all duration-200'
