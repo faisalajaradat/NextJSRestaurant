@@ -34,7 +34,7 @@ const initModel = async () => {
   const sequelize = await initDatabase();
   Restaurant.initModel(sequelize);
   User.initModel(sequelize);
-  await sequelize.sync({ force: true });
+  await sequelize.sync({ force: false });
   console.log('Database & tables created!');
 };
 

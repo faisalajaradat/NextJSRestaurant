@@ -14,11 +14,14 @@ export default async function HomePage() {
   const totalRestaurants = restaurants.length;
 
   // Find the highest-rated restaurant
-  const highestRatedRestaurant = restaurants.reduce((prev: RestaurantAttributes, current: RestaurantAttributes) => {
-    const prevAvgRating = (prev.rating_ambiance + prev.rating_foodquality + prev.rating_service) / 3;
-    const currentAvgRating = (current.rating_ambiance + current.rating_foodquality + current.rating_service) / 3;
-    return currentAvgRating > prevAvgRating ? current : prev;
-  });
+  const highestRatedRestaurant = restaurants.length > 0
+  ? restaurants.reduce((prev: RestaurantAttributes, current: RestaurantAttributes) => {
+      const prevAvgRating = (prev.rating_ambiance + prev.rating_foodquality + prev.rating_service) / 3;
+      const currentAvgRating = (current.rating_ambiance + current.rating_foodquality + current.rating_service) / 3;
+      return currentAvgRating > prevAvgRating ? current : prev;
+    })
+  : null;
+  
     return(
         <div className='flex flex-col justify-center items-center' style={{ height:`calc(100vh-7vh)`, overflow: 'hidden' }}> 
             <section className="container mx-auto px-6 pt-8 pb-22 lg:pb-24 lg:pt-8">
