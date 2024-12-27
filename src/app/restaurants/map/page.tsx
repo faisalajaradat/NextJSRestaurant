@@ -4,12 +4,11 @@ import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
-// Component to update map center dynamically
 function UpdateMapCenter({ center }: { center: [number, number] }) {
   const map = useMap();
   useEffect(() => {
     if (center) {
-      map.setView(center, 15); // Update map view when center changes
+      map.setView(center, 15)
     }
   }, [center, map]);
   return null;
@@ -33,11 +32,12 @@ export default function RestaurantsMap() {
     }
   }, []);
 
-  // Default location (fallback)
+  //fallback location
   const defaultCenter: [number, number] = [51.505, -0.09];
 
   return (
     <div style={{ height: '100vh', width: '100%' }}>
+    {typeof window !== 'undefined' && (
       <MapContainer
         center={userLocation ? [userLocation.lat, userLocation.lng] : defaultCenter}
         zoom={13}
@@ -50,6 +50,7 @@ export default function RestaurantsMap() {
         />
         {userLocation && <UpdateMapCenter center={[userLocation.lat, userLocation.lng]} />}
       </MapContainer>
+    )}
     </div>
   );
 }
