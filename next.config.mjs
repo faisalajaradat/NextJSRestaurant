@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     experimental: {
-        serverComponentsExternalPackages: ['sequelize'],
+        serverComponentsExternalPackages: ['sequelize', 'pg'],
+        appDir:true,
       },
         webpack: (config) => {
             config.externals = [...config.externals, 'bcrypt'];

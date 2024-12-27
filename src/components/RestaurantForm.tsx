@@ -21,6 +21,8 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
     name: '',
     address: '',
     cuisine: [],
+    longitude: 0,
+    latitude: 0,
     meal: null,
     rating_service: 0,
     rating_foodquality: 0,
@@ -68,26 +70,35 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
       });
 
       const handlePlaceChanged = () => {
-        const place = autocompleteRef.current?.getPlace();
-        if (place && place.address_components) {
+        const place: google.maps.places.PlaceResult | undefined = autocompleteRef.current?.getPlace();
+      
+        if (place && place.address_components && place.geometry?.location) {
           const addressComponents = place.address_components;
+      
           const streetNumber = addressComponents.find(ac => ac.types.includes('street_number'))?.long_name || '';
           const route = addressComponents.find(ac => ac.types.includes('route'))?.long_name || '';
           const locality = addressComponents.find(ac => ac.types.includes('locality'))?.long_name || '';
           const administrativeArea = addressComponents.find(ac => ac.types.includes('administrative_area_level_1'))?.short_name || '';
           const country = addressComponents.find(ac => ac.types.includes('country'))?.long_name || '';
           const postalCode = addressComponents.find(ac => ac.types.includes('postal_code'))?.long_name || '';
-
+      
           const formattedAddress = `${streetNumber} ${route}, ${locality}, ${administrativeArea} ${postalCode}, ${country}`;
-
+      
+          const latitude = place.geometry.location.lat();
+          const longitude = place.geometry.location.lng();
+      
           setFormData(prev => ({
             ...prev,
             name: place.name || prev.name,
-            address: formattedAddress
+            address: formattedAddress,
+            latitude,
+            longitude,
           }));
+        } else {
+          console.warn('Place, address components, or geometry is undefined.');
         }
       };
-
+      
       autocompleteRef.current.addListener('place_changed', () => handlePlaceChanged());
 
       return () => {
@@ -136,6 +147,8 @@ const RestaurantForm: React.FC<RestaurantFormProps> = ({ onSubmit, onClose }) =>
         name: '',
         address: '',
         cuisine: [],
+        longitude:0,
+        latitude:0,
         meal: null,
         rating_service: 0,
         rating_foodquality: 0,

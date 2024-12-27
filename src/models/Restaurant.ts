@@ -13,6 +13,8 @@ export interface RestaurantAttributes {
   name: string;
   address: string;
   cuisine: Cuisine[];
+  latitude: number;
+  longitude: number;
   meal: Mealtype;
   rating_service: number;
   rating_foodquality: number;
@@ -31,6 +33,8 @@ class Restaurant extends Model<RestaurantAttributes, RestaurantCreationAttribute
   public name!: string;
   public address!: string;
   public cuisine!: Cuisine[];
+  public latitude!: number;
+  public longitude!: number;
   public meal!: Mealtype;
   public rating_service!: number;
   public rating_foodquality!: number;
@@ -57,6 +61,14 @@ class Restaurant extends Model<RestaurantAttributes, RestaurantCreationAttribute
       },
       cuisine: {
         type: DataTypes.JSON,  // Storing array of Cuisine as JSON
+        allowNull: false,
+      },
+      latitude:{
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
+      longitude:{
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
       meal: {

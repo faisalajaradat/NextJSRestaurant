@@ -29,13 +29,13 @@ export async function POST(request: Request) {
 
   try {
     const body: RestaurantCreationAttributes = await request.json();
-    const { userId, name, address, cuisine, meal, rating_ambiance, rating_foodquality, rating_service, notes } = body;
+    const { userId, name, address, latitude, longitude, cuisine, meal, rating_ambiance, rating_foodquality, rating_service, notes } = body;
 
     // Log the entire request body and specifically the userId for debugging purposes
     console.log('Request body:', body);
     console.log('User ID:', userId);
 
-    if (!userId || !name || !address || !cuisine || !meal || rating_ambiance === undefined || rating_foodquality === undefined || rating_service === undefined) {
+    if (!userId || !name || !address || !cuisine || !latitude || !longitude || !meal || rating_ambiance === undefined || rating_foodquality === undefined || rating_service === undefined) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Ratings must be numbers between 0 and 10' }, { status: 400 });
     }
 
-    const restaurant = await createRestaurant({ userId, name, address, cuisine, meal, rating_ambiance, rating_foodquality, rating_service, notes });
+    const restaurant = await createRestaurant({ userId, name, address, cuisine, latitude, longitude, meal, rating_ambiance, rating_foodquality, rating_service, notes });
     return NextResponse.json(restaurant, { status: 201 });
   } catch (error) {
     console.error('Failed to create restaurant:', error);
