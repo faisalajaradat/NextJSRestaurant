@@ -1,6 +1,6 @@
 import { Sequelize, Options } from 'sequelize';
 import Restaurant, { RestaurantAttributes, RestaurantCreationAttributes } from '../models/Restaurant';
-import config from '../../config/config';
+import config from '../../config/config.js';
 import User, { UserAttributes, UserCreationAttributes } from '@/models/User';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -34,7 +34,7 @@ const initModel = async () => {
   const sequelize = await initDatabase();
   Restaurant.initModel(sequelize);
   User.initModel(sequelize);
-  await sequelize.sync({ force: false });
+  await sequelize.sync({ force: true });
   console.log('Database & tables created!');
 };
 
