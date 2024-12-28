@@ -20,7 +20,7 @@ const RestaurantList: React.FC<RestaurantListProps> = ({ restaurants }) => {
 
 
   return (
-    <div className="flex flex-wrap space-x-6 w-full dark">
+    <div className="flex flex-wrap space-x-0 space-y-2 md:space-x-6 w-full dark">
       {restaurants.map((restaurant) => (
         <div key={restaurant.id} className="flex-none w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-0">
             <Link href={`/restaurants/${restaurant.id}`} className="hover:bg-white">
