@@ -55,7 +55,7 @@ export default function Navbar() {
               </div>
             ) : (
               <div className='hidden md:flex'>
-                <Link href="/signin" className="text-black mr-4 px-4 py-2 hover:text-blue-200">
+                <Link href="/signin" className="bg-slate-400 text-black mr-4 px-4 py-2 rounded hover:text-blue-200">
                   Sign In
                 </Link>
                 <Link href="/signup" className="bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-100">
