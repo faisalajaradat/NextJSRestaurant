@@ -4,6 +4,7 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { RestaurantAttributes } from '@/models/Restaurant';
+import Link from 'next/link';
 
 function UpdateMapCenter({ center }: { center: [number, number] }) {
   const map = useMap();
@@ -87,7 +88,7 @@ export default function RestaurantsMap() {
             <div key={restaurant.id}>
               <Marker position={[restaurant.latitude, restaurant.longitude]}>
                 <Popup>
-                  <b className='text-lg'>{restaurant.name}</b>
+                  <b className='text-lg'><Link href={`/restaurants/${restaurant.id}`}>{restaurant.name}</Link></b>
                   
                   <br />
                   {restaurant.address}

@@ -24,12 +24,12 @@ const RestaurantDetail: React.FC<RestaurantDetailProps> = ({ id }) => {
   if (!restaurant) return <div>Loading...</div>;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" id='testing'>
       <h1 className="text-2xl font-bold">{restaurant.name}</h1>
       <p><strong>Address:</strong> {restaurant.address}</p>
       <p><strong>Cuisine:</strong> {renderCuisine(restaurant.cuisine)}</p>
       <p><strong>Meal: </strong>{restaurant.meal}</p>
-      <p><strong>Overall Rating</strong> <StarRating rating={calculateAverage(restaurant.rating_service, restaurant.rating_foodquality, restaurant.rating_ambiance)} onRatingChange={() => {}} maxRating={5} allowHover={false} /></p>
+      <strong>Overall Rating</strong> <StarRating rating={calculateAverage(restaurant.rating_service, restaurant.rating_foodquality, restaurant.rating_ambiance)} onRatingChange={() => {}} maxRating={5} allowHover={false} />
       <strong>Service Rating:</strong> <StarRating rating= {restaurant.rating_service}onRatingChange={() => {}} maxRating={5} allowHover={false} />
       <strong>Food Quality Rating:</strong> <StarRating rating= {restaurant.rating_foodquality}onRatingChange={() => {}} maxRating={5} allowHover={false} />
       <strong>Ambiance Rating:</strong> <StarRating rating= {restaurant.rating_ambiance}onRatingChange={() => {}} maxRating={5} allowHover={false} />
