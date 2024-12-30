@@ -96,11 +96,11 @@
 }
 
 .pac-container {
-  z-index: 1051 !important; 
+  z-index: 100 !important; 
   cursor: pointer !important;
 }.pac-item{
   cursor: pointer !important;
-  z-index: 1051 !important; 
+  z-index: 100 !important; 
 }
 
 .form-container {

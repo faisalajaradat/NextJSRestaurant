@@ -66,7 +66,7 @@ export default function Navbar() {
           </div>
 
            {/* Mobile Hamburger Menu */}
-           <div className="md:hidden">
+           <div className="md:hidden ">
             <button
               className="text-black focus:outline-none"
               onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
@@ -90,7 +90,7 @@ export default function Navbar() {
 
           {/* Mobile Menu Content */}
           {isMobileMenuOpen && (
-            <div className="absolute top-16 left-0 w-full bg-slate-300 flex flex-col p-4 space-y-4 shadow-md">
+            <div className="absolute top-16 left-0 w-full bg-slate-300 flex flex-col p-4 space-y-4 shadow-md z-10">
               <Link href="/home" className={linkStyle('/home')} onClick={() => setMobileMenuOpen(false)}>
                 Home
               </Link>
