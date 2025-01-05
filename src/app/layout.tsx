@@ -21,7 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <Script defer src="http://192.168.3.219:3300/script.js" data-website-id="e56a84da-e3df-41c3-9505-d2ded6c654ff"/>
+        <Script 
+        defer 
+        src="https://umami-s0oc4skk08wwkowg8gokc088.aylasarahfais.com/script.js" 
+        data-website-id="0d1b988b-b000-408e-a797-0348b4a22351"/>
         <link 
         rel="stylesheet" 
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
