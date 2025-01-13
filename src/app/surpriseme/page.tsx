@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 
 
 
-export default function page (){
+export default function Surpriseme (){
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   useEffect(() => {
     if (navigator.geolocation) {
@@ -31,7 +31,7 @@ export default function page (){
 
 
     </div>
-  )
+  );
 }
 
 
