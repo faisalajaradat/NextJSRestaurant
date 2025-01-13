@@ -29,7 +29,7 @@ export default function Navbar() {
             <div className='hidden md:flex space-x-4'>
               <Link href='/home' className={linkStyle('/home')}> Home </Link>
               <Link href='/restaurants/list' className={linkStyle('/restaurants')}> Restaurants </Link>
-              <Link href='surpriseme' className={linkStyle('/surpriseme')}> Surprise Me </Link>
+              <Link href='/surpriseme' className={linkStyle('/surpriseme')}> Surprise Me </Link>
             </div>
           </div>
           <div>
