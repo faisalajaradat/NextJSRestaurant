@@ -9,8 +9,8 @@ import Script from 'next/script'
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Restaurant Tracker",
-  description: "Restaurant Tracker is a simple app to track your favorite restaurants.",
+  title: "DineMapper",
+  description: "Dine Mapper is a simple app to track your favorite restaurants.",
 };
 
 export default function RootLayout({

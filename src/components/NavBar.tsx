@@ -24,11 +24,12 @@ export default function Navbar() {
         <div className="h-[7vh] container mx-auto flex justify-between items-center px-0">
           <div className='flex-nowrap flex items-center'>
             <Link href="/" className="text-black text-2xl mr-10 font-bold hover:text-blue-500">
-              Restaurant Tracker
+              DineMapper
             </Link>
             <div className='hidden md:flex space-x-4'>
               <Link href='/home' className={linkStyle('/home')}> Home </Link>
               <Link href='/restaurants/list' className={linkStyle('/restaurants')}> Restaurants </Link>
+              <Link href='surpriseme' className={linkStyle('/surpriseme')}> Surprise Me </Link>
             </div>
           </div>
           <div>

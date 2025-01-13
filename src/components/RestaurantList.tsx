@@ -26,7 +26,6 @@ const RestaurantList: React.FC<RestaurantListProps> = ({ restaurants }) => {
             <Link href={`/restaurants/${restaurant.id}`} className="hover:bg-white">
                 <Card>
                     <CardHeader>
-                    
                         <h2 className="text-xl font-semibold">{restaurant.name}</h2>
                     </CardHeader>
                     <CardContent style={{whiteSpace:'nowrap', overflow:'hidden'}}>
