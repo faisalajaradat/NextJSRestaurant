@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import Navbar from "@/components/NavBar";
 import { AuthProvider } from "@/hooks/useAuth";
 import Script from 'next/script'
+import LocationProvider from "@/contexts/LocationContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,7 +35,9 @@ export default function RootLayout({
       <body className={`${inter.className} bg-slate-300`}>
         <AuthProvider>
           <Navbar/>
-          {children}
+            <LocationProvider>
+              {children}
+            </LocationProvider>
           <Toaster />
         </AuthProvider>
       </body>

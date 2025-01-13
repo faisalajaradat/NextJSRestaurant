@@ -2,9 +2,9 @@
 
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 import { RestaurantAttributes } from '@/models/Restaurant';
 import Link from 'next/link';
+import { useLocation } from '@/contexts/LocationContext';
 
 function UpdateMapCenter({ center }: { center: [number, number] }) {
   const map = useMap();
@@ -18,7 +18,7 @@ function UpdateMapCenter({ center }: { center: [number, number] }) {
 
 
 export default function RestaurantsMap() {
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const {location:userLocation,error,loading} = useLocation();
   const [restaurants, setRestaurants] = useState<RestaurantAttributes[]>([]);
 
   const fetchRestaurants = async () => {
@@ -39,20 +39,7 @@ export default function RestaurantsMap() {
     }
   };
   
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setUserLocation({ lat: latitude, lng: longitude });
-          toast.success('Location retrieved successfully!');
-        },
-        (error) => {
-          toast.error('Unable to retrieve your location.');
-        }
-      );
-    }
-  }, []);
+
   useEffect(()=>{
     fetchRestaurants()
   },[])
@@ -66,7 +53,7 @@ export default function RestaurantsMap() {
       
     {typeof window !== 'undefined' && (
       <MapContainer
-        center={userLocation ? [userLocation.lat, userLocation.lng] : defaultCenter}
+        center={userLocation ? [userLocation.latitude, userLocation.longitude] : defaultCenter}
         zoom={13}
         scrollWheelZoom={false}
         style={{ height: '100%', width: '100%' }}
@@ -75,7 +62,7 @@ export default function RestaurantsMap() {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {userLocation && <UpdateMapCenter center={[userLocation.lat, userLocation.lng]} />}
+        {userLocation && <UpdateMapCenter center={[userLocation.latitude, userLocation.longitude]} />}
 
 
         {/* WRITE FOR LOOP FOR ALL RESTAURANTS */}
@@ -88,7 +75,7 @@ export default function RestaurantsMap() {
             <div key={restaurant.id}>
               <Marker position={[restaurant.latitude, restaurant.longitude]}>
                 <Popup>
-                  <b className='text-lg'><Link href={`/restaurants/${restaurant.id}`}>{restaurant.name}</Link></b>
+                  <Link href={`/restaurants/${restaurant.id}`}> <b className='hover:text-blue-950 text-lg'>{restaurant.name}</b></Link>
                   
                   <br />
                   {restaurant.address}

@@ -21,6 +21,15 @@ const nextConfig = {
     },
     
   },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/restaurants',
+  //       destination: '/restaurants/list',
+  //       permanent:true
+  //     },
+  //   ]
+  // },
     
 
 };
