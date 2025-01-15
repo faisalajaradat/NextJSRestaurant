@@ -117,7 +117,7 @@ export default function Surpriseme() {
         </div>
       )}
 
-      {/* Get Recommendation Button */}
+      {/* Recommendation Button */}
       <Button className="mt-6 w-full" onClick={handleGetRecommendation}>
         Get Recommendation
       </Button>
