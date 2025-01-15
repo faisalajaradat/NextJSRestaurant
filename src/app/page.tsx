@@ -3,6 +3,10 @@ import Image from 'next/image';
 import { RestaurantAttributes } from '@/models/Restaurant';
 import { getAllRestaurants } from '@/lib/database';
 import Link from 'next/link';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import StarRating from '@/components/starRating';
+import { renderCuisine } from '@/utils/renderCuisine';
+import calculateAverage from '@/utils/CalculateAverageStars';
 
 
 
@@ -56,28 +60,39 @@ export default async function HomePage() {
             </section>
 
                 {/* Section for MAP + Total Restaurants */}
-            <section className="container mx-auto mt-8 flex flex-col items-center">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Restaurant Stats</h2>
-                <div className='flex flex-row w-full justify-center items-center '>
-                    <div className='basis-1/2 text-center'>
+                <section className="container mx-auto pt-8 flex flex-col items-center">
+                    <h2 className="text-3xl font-semibold text-gray-900 mb-4">Restaurant Stats</h2>
+                    <div className="flex flex-row w-full justify-around items-center">
+                        {/* Total Restaurants */}
+                        <div className="basis-1/3 text-center bg-slate-500 rounded-lg p-4">
                         <p className="text-lg">
-                        <strong>Total Restaurants:</strong> {totalRestaurants}
+                            <strong>Total Restaurants:</strong> {totalRestaurants}
                         </p>
-                    </div>
-                    <div className='basis-1/2 text-center'> 
-                        {highestRatedRestaurant && (
-                        <div >
-                            <h3 className="text-xl font-semibold text-gray-900">Highest Rated Restaurant</h3>
-                            <p>
-                            <strong>{highestRatedRestaurant.name}</strong> - Average Rating: 
-                            {((highestRatedRestaurant.rating_ambiance + highestRatedRestaurant.rating_foodquality + highestRatedRestaurant.rating_service) / 3).toFixed(1)}
-                            </p>
                         </div>
+
+                        {/* Highest Rated Restaurant */}
+                        <div className="basis-1/3 text-center">
+                        {highestRatedRestaurant && (
+                            <div>
+                            <div key={highestRatedRestaurant.id} className="w-full dark hover:bg-slate-750">
+                                <h1 className="text-xl p-4">Highest Rated Restaurant</h1>
+                                <Link href={`/restaurants/${highestRatedRestaurant.id}`} className="hover:bg-white">
+                                <Card>
+                                    <CardHeader>
+                                    <h2 className="text-xl font-semibold">{highestRatedRestaurant.name}</h2>
+                                    </CardHeader>
+                                    <CardContent style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
+                                    <p><strong>Address:</strong> {highestRatedRestaurant.address}</p>
+                                    <p className="mb-2"><strong>Cuisine:</strong> {renderCuisine(highestRatedRestaurant.cuisine)}</p>
+                                    </CardContent>
+                                </Card>
+                                </Link>
+                            </div>
+                            </div>
                         )}
+                        </div>
                     </div>
-                </div>
-                
-            </section>
+                    </section>
         </div>
     )
 }
