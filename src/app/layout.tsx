@@ -23,7 +23,7 @@ export default function RootLayout({
       <head>
         <Script 
         defer 
-        src="https://umami-s0oc4skk08wwkowg8gokc088.aylasarahfais.com/script.js" 
+        src="https://umami-s0oc4skk08wwkowg8gokc088.faiscs.com/script.js" 
         data-website-id="0d1b988b-b000-408e-a797-0348b4a22351"/>
         <link 
         rel="stylesheet" 
